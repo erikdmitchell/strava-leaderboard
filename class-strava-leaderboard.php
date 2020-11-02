@@ -110,7 +110,7 @@ final class SLWP {
 
         // load if in admin.
         if ( is_admin() ) {
-            include_once( SLWP_PATH . 'class-slwp-admin.php' );
+            include_once( SLWP_PATH . 'includes/admin/class-slwp-admin.php' );
         }
     }
 
