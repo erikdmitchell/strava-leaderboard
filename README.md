@@ -1,2 +1,1 @@
 # strava-leaderboard
-# strava-leaderboard
