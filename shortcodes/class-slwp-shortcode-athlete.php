@@ -34,7 +34,6 @@ class SLWP_Shortcode_Athlete {
             $atts,
             'slwp_athlete'
         );
-        // $html = '';
 
         $api_wrapper = new Swagger\Client\ApiWrapper();
         $emst_template_loader = new SLWP_Template_Loader();
@@ -59,8 +58,6 @@ class SLWP_Shortcode_Athlete {
             $emst_template_loader->set_template_data( $args );
             $emst_template_loader->get_template_part( 'athlete' );
         }
-
-        // return $html;
     }
 
 }

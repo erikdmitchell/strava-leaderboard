@@ -34,7 +34,6 @@ class SLWP_Shortcode_Segment {
             $atts,
             'slwp_segment'
         );
-        // $html = '';
 
         $api_wrapper = new Swagger\Client\ApiWrapper();
         $emst_template_loader = new SLWP_Template_Loader();
@@ -61,8 +60,6 @@ class SLWP_Shortcode_Segment {
             $emst_template_loader->set_template_data( $args );
             $emst_template_loader->get_template_part( 'segment' );
         }
-
-        // return $html;
     }
 
 }

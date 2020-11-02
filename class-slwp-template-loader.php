@@ -28,7 +28,7 @@ class SLWP_Template_Loader {
      *
      * @var string
      */
-    protected $filter_prefix = 'em_strava_app';
+    protected $filter_prefix = 'slwp';
 
     /**
      * Directory name where custom templates for this plugin should be found in the theme.
@@ -39,7 +39,7 @@ class SLWP_Template_Loader {
      *
      * @var string
      */
-    protected $theme_template_directory = 'emst-templates';
+    protected $theme_template_directory = 'slwp-templates';
 
     /**
      * Reference to the root directory path of this plugin.

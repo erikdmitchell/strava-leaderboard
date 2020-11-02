@@ -34,7 +34,6 @@ class SLWP_Shortcode_Segment_Efforts {
             $atts,
             'slwp_segment_efforts'
         );
-        // $html = '';
 
         $api_wrapper = new Swagger\Client\ApiWrapper();
         $emst_template_loader = new SLWP_Template_Loader();
@@ -61,8 +60,6 @@ class SLWP_Shortcode_Segment_Efforts {
                 $emst_template_loader->get_template_part( 'segment-efforts' );
             endforeach;
         }
-
-        // return $html;
     }
 
 }
