@@ -1,19 +1,6 @@
 <?php
 
-/**
- * Description
- *
- * @package EMST
- */
-
-namespace EMST;
-
-/**
- * Description
- *
- * @package EMST
- */
-class Users {
+class SLWP_Users {
 
     public function __construct() {
         $this->client_id = get_slwp_client_id();

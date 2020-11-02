@@ -22,9 +22,6 @@ if ( ! defined( 'WPINC' ) ) {
 // Load composer autloader.
 require_once( __DIR__ . '/vendor/autoload.php' );
 
-// Import the autoloader.
-include_once 'src/autoload.php';
-
 if ( ! defined( 'SLWP_PLUGIN_FILE' ) ) {
     define( 'SLWP_PLUGIN_FILE', __FILE__ );
 }

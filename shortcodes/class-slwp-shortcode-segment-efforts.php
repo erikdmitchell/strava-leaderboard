@@ -40,7 +40,7 @@ class SLWP_Shortcode_Segment_Efforts {
         $emst_template_loader = new SLWP_Template_Loader();
 
         // App user data.
-        $users = new EMST\Users();
+        $users = new SLWP_Users();
         $users->init();
         $users_data = $users->get_users_data();
 

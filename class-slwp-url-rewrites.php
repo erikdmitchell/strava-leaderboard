@@ -1,12 +1,4 @@
 <?php
-/**
- * SLWP url rewrites class
- *
- * @package slwp
- * @since   0.1.0
- */
-
-use EMST\Oauth;
 
 /**
  * SLWP_Url_Rewrites class.
@@ -43,7 +35,7 @@ class SLWP_Url_Rewrites {
         $custom = intval( get_query_var( 'custom' ) );
 
         if ( $custom ) {
-            $oauth = new Oauth\Auth();
+            $oauth = new SLWP_Oauth();
             $message = $oauth->validate_app();
 
             $message_html = '<div class="validate-app ' . $message['action'] . '">' . $message['message'] . '</div>';

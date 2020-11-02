@@ -1,19 +1,6 @@
 <?php
 
-/**
- * Description
- *
- * @package EMST\Oauth
- */
-
-namespace EMST\Oauth;
-
-/**
- * Description
- *
- * @package EMST\Oauth
- */
-class Auth {
+class SLWP_Oauth {
 
     public function __construct() {}
 

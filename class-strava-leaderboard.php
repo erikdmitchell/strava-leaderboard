@@ -97,6 +97,8 @@ final class SLWP {
      */
     public function includes() {
         include_once( SLWP_PATH . 'class-slwp-api-format.php' );
+        include_once( SLWP_PATH . 'class-slwp-users.php' );
+        include_once( SLWP_PATH . 'class-slwp-oauth.php' );
         include_once( SLWP_PATH . 'class-slwp-api-wrapper.php' );
         include_once( SLWP_PATH . 'class-slwp-install.php' );
         include_once( SLWP_PATH . 'class-slwp-template-loader.php' );

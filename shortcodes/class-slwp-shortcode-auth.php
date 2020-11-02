@@ -1,12 +1,4 @@
 <?php
-/**
- * SLWP_Shortcode_Auth class.
- *
- * @package slwp
- * @since   0.1.0
- */
-
-use EMST\Oauth;
 
 /**
  * SLWP_Shortcode_Auth class.
@@ -39,7 +31,7 @@ class SLWP_Shortcode_Auth {
             'slwp_auth'
         );
 
-        $oauth = new Oauth\Auth();
+        $oauth = new SLWP_Oauth();
         $url = $oauth->authorize_url();
 
         $url_html = '<a href="' . $url . '">' . $atts['text'] . '</a>';
