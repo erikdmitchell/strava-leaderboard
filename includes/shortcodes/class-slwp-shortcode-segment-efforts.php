@@ -47,7 +47,7 @@ class SLWP_Shortcode_Segment_Efforts {
             $efforts = $api_wrapper->get_segment_efforts( $user->access_token ); // this needs to be a loop
 
             foreach ( $efforts as $effort ) :
-                $args = array(
+                $args[] = array(
                     'time' => slwp()->format->format_time( $effort->getElapsedTime() ),
                     'iskom' => slwp()->format->is_kom( $effort->getIsKom() ),
                     'date' => slwp()->format->format_date( $effort->getStartDate() ),
@@ -55,10 +55,10 @@ class SLWP_Shortcode_Segment_Efforts {
                     'komrank' => slwp()->format->kom_rank( $effort->getKomRank() ),
                     'prrank' => slwp()->format->pr_rank( $effort->getPrRank() ),
                 );
-
-                $emst_template_loader->set_template_data( $args );
-                $emst_template_loader->get_template_part( 'segment-efforts' );
             endforeach;
+            
+            $emst_template_loader->set_template_data( $args );
+            $emst_template_loader->get_template_part( 'segment-efforts' );            
         }
     }
 
