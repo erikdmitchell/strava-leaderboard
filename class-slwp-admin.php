@@ -110,7 +110,7 @@ final class SLWP_Admin {
             'manage_options',
             'slwp',
             array( $this, 'page' ),
-            '',
+            SLWP_ASSETS_URL . 'images/strava_symbol_white.png',
             89
         );
     }
