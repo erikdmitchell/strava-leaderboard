@@ -1,10 +1,9 @@
 <?php
-namespace Swagger\Client;
 
 use GuzzleHttp\Client;
 use Swagger\Client\Api;
 
-class ApiWrapper {
+class SLWP_Api_Wrapper {
 
     public function __construct() {
         // $this->init();
@@ -17,7 +16,7 @@ class ApiWrapper {
     }
 
     public function get_segment( $athlete_secret = '', $id = 580149 ) {
-        $config = Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
+        $config = Swagger\Client\Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
         $apiInstance = new Api\SegmentsApi( new Client(), $config );
 
         try {
@@ -30,7 +29,7 @@ class ApiWrapper {
     }
 
     public function get_segment_efforts( $athlete_secret = '', $id = 580149, $start_date = '2020-01-01', $end_date_local = '2020-10-21', $per_page = 30 ) {
-        $config = Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
+        $config = Swagger\Client\Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
 
         $apiInstance = new Api\SegmentEffortsApi( new Client(), $config );
 
@@ -47,7 +46,7 @@ class ApiWrapper {
     }
 
     public function get_athlete( $athlete_secret = '' ) {
-        $config = Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
+        $config = Swagger\Client\Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
 
         $apiInstance = new Api\AthletesApi( new Client(), $config );
 
@@ -61,7 +60,7 @@ class ApiWrapper {
     }
 
     public function get_activity( $athlete_secret = '', $id = 3221463650, $include_all_efforts = true ) {
-        $config = Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
+        $config = Swagger\Client\Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
 
         $apiInstance = new Api\ActivitiesApi( new Client(), $config );
 

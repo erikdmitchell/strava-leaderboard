@@ -35,7 +35,7 @@ class SLWP_Shortcode_Athlete {
             'slwp_athlete'
         );
 
-        $api_wrapper = new Swagger\Client\ApiWrapper();
+        $api_wrapper = new SLWP_Api_Wrapper();
         $emst_template_loader = new SLWP_Template_Loader();
 
         // App user data.
