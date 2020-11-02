@@ -1,0 +1,33 @@
+.slwp {
+    @import 'bootstrap-grid/bootstrap-grid';
+}
+
+// - too generic?
+.header {
+    background: #ccc;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.header a {
+    color: #000;
+    text-decoration: none;
+}
+.header i {
+    margin-right: 15px;
+}
+.authorize {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.authorize .ouput-text {
+    float: right;
+}
+.validate-app {
+    padding: 5px 10px;
+}
+.error {
+    color: red;
+}
+.success {
+    color: green;
+}

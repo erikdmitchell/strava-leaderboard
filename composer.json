@@ -1,0 +1,35 @@
+{
+    "name": "erikdmitchell/strava-leaderboard",
+    "description": "",
+    "keywords": [
+        "erikdmitchell",
+        "strava"
+    ],
+    "type": "project",
+    "repositories": [ 
+        {
+            "type": "git",
+            "url": "https://github.com/erikdmitchell/strava-api-php.git"
+        }
+    ],    
+    "require": {
+        "erikdmitchell/strava-api-php": "*@dev",
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "3.*",
+        "wp-coding-standards/wpcs": "2.*",
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "phpcompatibility/php-compatibility": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Erik",
+            "email": "erikdmitchell@gmail.com"
+        }
+    ],
+    "scripts": {
+        "phpcs": "phpcs -s -p --standard=./phpcs.ruleset.xml",
+        "phpcbf": "phpcbf -p --standard=./phpcs.ruleset.xml"
+    }    
+}

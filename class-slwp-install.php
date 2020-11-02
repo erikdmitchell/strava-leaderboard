@@ -1,0 +1,87 @@
+<?php
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * SLWP_Install Class.
+ */
+class SLWP_Install {
+
+    /**
+     * Hook in tabs.
+     */
+    public static function init() {
+        add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
+    }
+
+    public static function check_version() {
+        if ( version_compare( SLWP_VERSION, get_option( 'slwp_version', 0 ), '>' ) ) {
+            self::install();
+        }
+    }
+
+    public static function install() {
+        if ( ! is_blog_installed() ) {
+            return;
+        }
+
+        // Check if we are not already running this routine.
+        if ( 'yes' === get_transient( 'slwp_installing' ) ) {
+            return;
+        }
+
+        // If we made it till here nothing is running yet, lets set the transient now.
+        set_transient( 'slwp_installing', 'yes', MINUTE_IN_SECONDS * 10 );
+
+        self::create_tables();
+        self::update_version();
+        self::maybe_update_db_version();
+
+        delete_transient( 'slwp_installing' );
+    }
+
+    public static function create_tables() {
+        global $wpdb;
+
+        $slwp_db_version = get_option( 'slwp_db_version', 0 );
+
+        if ( version_compare( $slwp_db_version, 0, '>' ) ) {
+            return;
+        }
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE slwp_tokens_refresh (
+            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `athlete_id` int(11) DEFAULT NULL,
+            `scope` tinyint(1) DEFAULT NULL,
+            `refresh_token` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`id`)
+    	) $charset_collate;";
+
+        $sql .= "CREATE TABLE slwp_tokens_sl (
+            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `athlete_id` int(11) DEFAULT NULL,
+            `scope` tinyint(1) DEFAULT NULL,
+            `access_token` varchar(255) DEFAULT NULL,
+            `expires_at` int(11) DEFAULT NULL,
+            PRIMARY KEY (`id`)
+    	) $charset_collate;";
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+
+        update_option( 'slwp_db_version', SLWP_DB_VERSION );
+    }
+
+    public static function update_version() {
+        update_option( 'slwp_version', SLWP_VERSION );
+    }
+
+    public static function maybe_update_db_version() {
+        // no updates yet
+    }
+
+}
+
+SLWP_Install::init();
