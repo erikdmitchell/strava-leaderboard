@@ -96,15 +96,15 @@ final class SLWP {
      * @return void
      */
     public function includes() {
-        include_once( SLWP_PATH . 'class-slwp-api-format.php' );
-        include_once( SLWP_PATH . 'class-slwp-logging.php' );
-        include_once( SLWP_PATH . 'class-slwp-users.php' );
-        include_once( SLWP_PATH . 'class-slwp-oauth.php' );
-        include_once( SLWP_PATH . 'class-slwp-api-wrapper.php' );
-        include_once( SLWP_PATH . 'class-slwp-install.php' );
-        include_once( SLWP_PATH . 'class-slwp-template-loader.php' );
-        include_once( SLWP_PATH . 'class-slwp-url-rewrites.php' );
-        include_once( SLWP_PATH . 'functions.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-api-format.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-logging.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-users.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-oauth.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-api-wrapper.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-template-loader.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-url-rewrites.php' );
+        include_once( SLWP_PATH . 'includes/functions.php' );
 
         $this->format = new SLWP_Api_Format();
 
@@ -144,7 +144,7 @@ final class SLWP {
      * @return void
      */
     public function load_includes() {
-        $dirs = array( 'shortcodes', 'post-types', 'taxonomies', 'metaboxes' );
+        $dirs = array( 'includes/shortcodes' );
 
         foreach ( $dirs as $dir ) :
             foreach ( glob( SLWP_PATH . $dir . '/*.php' ) as $file ) :
