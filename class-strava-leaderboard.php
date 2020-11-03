@@ -103,7 +103,7 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/class-slwp-post-types.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-api-wrapper.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
-        //include_once( SLWP_PATH . 'includes/class-slwp-template-loader.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-template-loader.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-url-rewrites.php' );
         include_once( SLWP_PATH . 'includes/functions.php' );
 
