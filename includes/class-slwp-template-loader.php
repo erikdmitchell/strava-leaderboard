@@ -7,8 +7,6 @@ class SLWP_Template_Loader {
 
     protected $template_path = SLWP_PATH . 'templates/';
 
-    //private $template_data_var_names = array( 'data' );
-
 	public function __construct() {
         add_filter( 'template_include', array( $this, 'template_loader' ) );
 	}

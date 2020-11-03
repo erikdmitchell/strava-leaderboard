@@ -15,7 +15,7 @@ function slwp_check_url_message() {
 }
 add_action( 'wp_footer', 'slwp_check_url_message' );
 
-function slwp_get_template_part( $slug, $name = '' ) {
+function slwp_get_template_part( $slug, $name = '', $args = null ) {
     $template = false; // this needs to check for cache at some point. 
     
 	if ( ! $template ) {

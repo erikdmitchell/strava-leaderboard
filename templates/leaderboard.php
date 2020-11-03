@@ -5,7 +5,8 @@
 		<?php
 		while ( have_posts() ) :
 			the_post();
-
+			//print_r($post);
+//echo $foo;
 			slwp_get_template_part( 'content', 'leaderboard' );
 
 		endwhile; // End of the loop.
