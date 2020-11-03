@@ -41,7 +41,7 @@ class SLWP_Users {
             echo 'use existing token<br>';
         } else {
             echo 'update token<br>';
-            //$this->refresh_token( $user );
+            $this->refresh_token( $user );
         }
     }
 
