@@ -16,7 +16,7 @@ class SLWP_Oauth {
             . '&redirect_uri=' . $redirect_uri
             . '&response_type=code'
             . '&approval_prompt=force'
-            . '&scope=read';
+            . '&scope=read_all,activity:read_all';
 
         $authorization_url = $url . $params;
 
@@ -88,7 +88,7 @@ class SLWP_Oauth {
         // store data
         $data = array(
             'athlete_id' => $response['athlete']['id'],
-            'scope' => 'read',
+            'scope' => 'read_all,activity:read_all',
             'expires_at' => $response['expires_at'],
             'access_token' => $response['access_token'],
         );
@@ -98,7 +98,7 @@ class SLWP_Oauth {
         // update tokens_refresh
          $data = array(
              'athlete_id' => $response['athlete']['id'],
-             'scope' => 'read',
+             'scope' => 'read_all,activity:read_all',
              'refresh_token' => $response['refresh_token'],
          );
 
