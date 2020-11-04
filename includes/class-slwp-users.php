@@ -77,8 +77,7 @@ class SLWP_Users {
             return $return;
         }
 
-        // update data
-
+        // update data.
         $data = array(
             'access_token' => $response['access_token'],
             'expires_at' => $response['expires_at'],
