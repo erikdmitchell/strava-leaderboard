@@ -21,7 +21,7 @@
 
             <div class="row">
                 <div class="col">
-                    Athlete Name
+                    <?php echo $args['user_first']; ?> <?php echo $args['user_last']; ?>
                 </div>
                 <div class="col">
                     Time: <?php echo $args['total_time']; ?>
