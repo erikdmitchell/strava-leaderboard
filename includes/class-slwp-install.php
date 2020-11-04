@@ -36,6 +36,7 @@ class SLWP_Install {
         self::create_tables();
         self::update_version();
         self::maybe_update_db_version();
+        self::setup_cron_jobs();
 
         delete_transient( 'slwp_installing' );
     }
@@ -80,6 +81,17 @@ class SLWP_Install {
 
     public static function maybe_update_db_version() {
         // no updates yet
+    }
+    
+    public static function setup_cron_jobs() {
+        // Use wp_next_scheduled to check if the event is already scheduled
+        $timestamp = wp_next_scheduled( 'slwp_user_token_check' );
+    
+        // If $timestamp == false schedule daily backups since it hasn't been done previously
+        if ( $timestamp == false ) {
+            // Schedule the event for right now, then to repeat daily using the hook 'slwp_user_token_check'
+            wp_schedule_event( time(), 'daily', 'slwp_user_token_check' );
+        }  
     }
 
 }

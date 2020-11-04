@@ -155,5 +155,27 @@ function is_field_group_exists( $value, $type = 'post_title' ) {
 }
 
 function slwp_check_user_tokens() {
-    
+    slwp()->users->check_users_token();
 }
+
+// Hook our function , slwp_check_user_tokens(), into the action slwp_user_token_check
+add_action( 'slwp_user_token_check', 'slwp_check_user_tokens' );
+
+/*
+add_filter( 'cron_schedules', 'slwp_add_weekly_schedule' );
+function slwp_add_weekly_schedule( $schedules ) {
+    $schedules['weekly'] = array(
+        'interval' => 7 * 24 * 60 * 60, // 7 days * 24 hours * 60 minutes * 60 seconds
+        'display' => __( 'Once Weekly', 'slwp' ),
+    );
+
+    return $schedules;
+}
+*/
+
+/*
+register_deactivation_hook( __FILE__, 'slwp_remove_user_token_check' );
+function slwp_remove_user_token_check() {
+    wp_clear_scheduled_hook( 'slwp_user_token_check' );
+}
+*/

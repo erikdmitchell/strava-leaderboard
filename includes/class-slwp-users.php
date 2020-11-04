@@ -6,17 +6,11 @@ class SLWP_Users {
         $this->client_id = get_slwp_client_id();
     }
 
-/*
-    public function init() {
-        //$this->check_users_token();
-    }
-*/
-
     public function check_users_token() {
         global $wpdb;
 
         $users = $wpdb->get_results( 'SELECT * from slwp_tokens_sl' );
-echo "check_users_token()<br>";
+        echo 'check_users_token()<br>';
         // check tokens.
         foreach ( $users as $user ) :
             $this->check_token( $user );
@@ -29,16 +23,16 @@ echo "check_users_token()<br>";
         }
 
         $current_time = current_time( 'timestamp' );
-echo "check_token()<br>";
-        
-        echo "$user->expires_at | $current_time<br>";
-/*
+echo 'check_token()<br>';
+
+echo "$user->expires_at | $current_time<br>";
+        /*
         $ct = date('Y-m-d h:i:s', $current_time);
         $ed = date('Y-m-d h:i:s', $user->expires_at);
 
         echo "$ed | $ct<br>";
         */
-/*
+        /*
         $this->refresh_token( $user );
 
         if ( $user->expires_at > $current_time ) {
@@ -47,7 +41,7 @@ echo "check_token()<br>";
             echo 'update token<br>';
             $this->refresh_token( $user );
         }
-*/
+        */
     }
 
     private function refresh_token( $user = '' ) {
