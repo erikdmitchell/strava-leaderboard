@@ -159,7 +159,8 @@ class SLWP_Logging {
 			'rewrite'         => false,
 			'capability_type' => 'post',
 			'supports'        => array( 'title', 'editor' ),
-			'can_export'      => false
+			'can_export'      => false,
+			'show_in_menu'    => false,
 		);
 		register_post_type( 'wp_log', apply_filters( 'wp_logging_post_type_args', $log_args ) );
 
