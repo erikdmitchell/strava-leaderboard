@@ -1,12 +1,12 @@
 <div id="leaderboard-<?php the_ID(); ?>" class="slwp-leaderboard leaderboard">
 
-	<div class="slwp">
+    <div class="slwp">
         <?php the_title( '<h1>', '</h1>' ); ?>
 
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <?php the_content( ); ?>
+                    <?php the_content(); ?>
                 </div>
             </div>
         </div>
@@ -36,6 +36,6 @@
 
         </div>
 
-	</div>
+    </div>
 
 </div>

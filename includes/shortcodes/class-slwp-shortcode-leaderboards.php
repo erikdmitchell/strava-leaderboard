@@ -29,19 +29,22 @@ class SLWP_Shortcode_Leaderboards {
             'slwp_leaderboards'
         );
         $html = '';
-        $leaderboards = get_posts( array(
-            'posts_per_page' => -1,
-            'post_type' => 'leaderboard',    
-        ) );
-        
-        if (empty($leaderboards))
+        $leaderboards = get_posts(
+            array(
+                'posts_per_page' => -1,
+                'post_type' => 'leaderboard',
+            )
+        );
+
+        if ( empty( $leaderboards ) ) {
             return $html;
-            
+        }
+
         $html .= '<h3>Leaderboards</h3>';
-            
+
         $html .= '<ul>';
-            foreach ($leaderboards as $leaderboard) :
-                $html .= '<li><a href="'.get_permalink( $leaderboard->ID ).'">'.$leaderboard->post_title.'</a></li>';
+        foreach ( $leaderboards as $leaderboard ) :
+            $html .= '<li><a href="' . get_permalink( $leaderboard->ID ) . '">' . $leaderboard->post_title . '</a></li>';
             endforeach;
         $html .= '</ul>';
 

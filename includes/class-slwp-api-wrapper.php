@@ -70,14 +70,14 @@ class SLWP_Api_Wrapper {
 
         $apiInstance = new Api\ActivitiesApi( new Client(), $config );
 
-        //$page = 56; // int | Page number. Defaults to 1.
-        //$per_page = 30; // int | Number of items per page. Defaults to 30.
-        
+        // $page = 56; // int | Page number. Defaults to 1.
+        // $per_page = 30; // int | Number of items per page. Defaults to 30.
+
         try {
-            $result = $apiInstance->getLoggedInAthleteActivities($before, $after);
-           
+            $result = $apiInstance->getLoggedInAthleteActivities( $before, $after );
+
             return $result;
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             return 'Exception when calling ActivitiesApi->getLoggedInAthleteActivities: ' . $e->getMessage();
         }
     }

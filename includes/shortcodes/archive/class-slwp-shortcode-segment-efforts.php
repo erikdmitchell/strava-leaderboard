@@ -56,9 +56,9 @@ class SLWP_Shortcode_Segment_Efforts {
                     'prrank' => slwp()->format->pr_rank( $effort->getPrRank() ),
                 );
             endforeach;
-            
+
             $emst_template_loader->set_template_data( $args );
-            $emst_template_loader->get_template_part( 'segment-efforts' );            
+            $emst_template_loader->get_template_part( 'segment-efforts' );
         }
     }
 
