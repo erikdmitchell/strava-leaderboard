@@ -116,6 +116,9 @@ function time_lb($fields) {
         $total_distance = 0;
         $total_time = 0;
         $activities_count = 0;
+
+        if (empty($activities) || !is_array($activities))
+            return false;
         
         foreach ($activities as $activity) :
             $args['activities'][] = array(
