@@ -73,6 +73,26 @@ class SLWP_Api_Wrapper {
         }
     }
 
+    public function get_athlete_activities( $athlete_secret = '', $before = '', $after = '' ) {
+        $config = Swagger\Client\Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
+
+        $apiInstance = new Api\ActivitiesApi( new Client(), $config );
+echo "$before | $after<br>";
+        //$before = 56; // int | An epoch timestamp to use for filtering activities that have taken place before a certain time.
+        //$after = 56; // int | An epoch timestamp to use for filtering activities that have taken place after a certain time.
+        //$page = 56; // int | Page number. Defaults to 1.
+        //$per_page = 30; // int | Number of items per page. Defaults to 30.
+        
+        try {
+            //$result = $apiInstance->getLoggedInAthleteActivities($before, $after, $page, $per_page);
+            $result = $apiInstance->getLoggedInAthleteActivities($before, $after);
+print_r($result);            
+            return $result;
+        } catch (Exception $e) {
+            return 'Exception when calling ActivitiesApi->getLoggedInAthleteActivities: ' . $e->getMessage();
+        }
+    }
+
     public function get_activity_url_by_id( $id_obj = '' ) {
         return '<a href="https://www.strava.com/activities/' . $id_obj['id'] . '" target="_blank">View Activity</a>';
     }
