@@ -108,6 +108,7 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/functions.php' );
 
         $this->format = new SLWP_Api_Format();
+        $this->users = new SLWP_Users();
 
         // load if in admin.
         if ( is_admin() ) {

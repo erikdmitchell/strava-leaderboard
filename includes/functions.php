@@ -77,11 +77,7 @@ function check_acf( $post_id = 0 ) {
 
 function single_segment( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
-
-    // App user data.
-    $users = new SLWP_Users();
-    $users->init();
-    $users_data = $users->get_users_data();
+    $users_data = slwp()->users->get_users_data();
 
     foreach ( $users_data as $user ) {
         $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'] );
@@ -105,11 +101,7 @@ function single_segment( $fields ) {
 
 function time_lb( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
-
-    // App user data.
-    $users = new SLWP_Users();
-    $users->init();
-    $users_data = $users->get_users_data();
+    $users_data = slwp()->users->get_users_data();
 
     foreach ( $users_data as $user ) {
         $activities = $api_wrapper->get_athlete_activities( $user->access_token, strtotime( $fields['end_date'] ), strtotime( $fields['start_date'] ) );
@@ -160,4 +152,8 @@ function is_field_group_exists( $value, $type = 'post_title' ) {
     }
 
     return $exists;
+}
+
+function slwp_check_user_tokens() {
+    
 }
