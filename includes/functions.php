@@ -59,7 +59,22 @@ function check_acf($post_id = 0) {
     
     if (!$fields)
         return false;
+echo '<pre>';
+print_r($fields);
+echo '</pre>';
+    switch ($fields['type']) {
+        case 'Segment' :
+            $args = single_segment($fields);
+            break;
+        case 'Time' :
+            $args = time_lb($fields);
+            break;
+    }
 
+    return $args;
+}
+
+function single_segment($fields) {
     $api_wrapper = new SLWP_Api_Wrapper();
 
     // App user data.
@@ -84,7 +99,29 @@ function check_acf($post_id = 0) {
         endforeach;
     }
 
-    return $args;
+    return $args;    
+}
+
+function time_lb($fields) {
+    $api_wrapper = new SLWP_Api_Wrapper();
+
+    // App user data.
+    $users = new SLWP_Users();
+    $users->init();
+    $users_data = $users->get_users_data();
+
+    foreach ( $users_data as $user ) {
+        //$efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'] );
+$date = new DateTime('10/01/2020'); // format: MM/DD/YYYY
+echo $date->format('U');
+echo '<br>';
+        $activities = $api_wrapper->get_athlete_activities( $user->access_token, strtotime($fields['end_date']), strtotime($fields['start_date']) );
+        $args['name'] = $fields['name'];
+print_r($activities);        
+
+    }
+
+    return $args;    
 }
 
 function is_field_group_exists($value, $type='post_title') {
