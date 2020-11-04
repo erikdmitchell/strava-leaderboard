@@ -41,7 +41,7 @@ class SLWP_Users {
             echo 'use existing token<br>';
         } else {
             echo 'update token<br>';
-            //$this->refresh_token( $user );
+            $this->refresh_token( $user );
         }
     }
 
@@ -90,8 +90,7 @@ class SLWP_Users {
             return $return;
         }
 
-        // update data | scope is always read.
-        // $scope = 'read';
+        // update data
 
         $data = array(
             'access_token' => $response['access_token'],

@@ -2,7 +2,9 @@
 
 class SLWP_Oauth {
 
-    public function __construct() {}
+    public function __construct() {
+        $this->scope = 'read,activity:read';
+    }
 
     public function authorize_url() {
         return $this->get_authorize_url();
@@ -16,7 +18,7 @@ class SLWP_Oauth {
             . '&redirect_uri=' . $redirect_uri
             . '&response_type=code'
             . '&approval_prompt=force'
-            . '&scope=read';
+            . '&scope=' . $this->scope;
 
         $authorization_url = $url . $params;
 
@@ -85,29 +87,46 @@ class SLWP_Oauth {
             return $return;
         }
 
-        // store data
+        // do update, otherwise insert.
+        $table = 'slwp_tokens_sl';
+        $row_id = $wpdb->get_var( "SELECT id FROM $table WHERE athlete_id = " . $response['athlete']['id'] );
         $data = array(
-            'athlete_id' => $response['athlete']['id'],
-            'scope' => 'read',
+            'scope' => $this->scope,
             'expires_at' => $response['expires_at'],
             'access_token' => $response['access_token'],
         );
 
-        $wpdb->insert( 'slwp_tokens_sl', $data );
+        if ($row_id) {
+            $where = array('id' => $row_id);
+            
+            $updated = $wpdb->update( $table, $data, $where );    
+        } else {
+            $data['athlete_id'] = $response['athlete']['id'];
+             
+            $wpdb->insert( $table, $data );
+        }
 
-        // update tokens_refresh
-         $data = array(
-             'athlete_id' => $response['athlete']['id'],
-             'scope' => 'read',
-             'refresh_token' => $response['refresh_token'],
-         );
+        $table = 'slwp_tokens_refresh';
+        $row_id = $wpdb->get_var( "SELECT id FROM $table WHERE athlete_id = " . $response['athlete']['id'] );
+        $data = array(
+            'scope' => $this->scope,
+            'refresh_token' => $response['refresh_token'],
+        );
 
-         $wpdb->insert( 'slwp_tokens_refresh', $data );
+        if ($row_id) {
+            $where = array('id' => $row_id);
+            
+            $updated = $wpdb->update( $table, $data, $where );    
+        } else {
+            $data['athlete_id'] = $response['athlete']['id'];
+             
+            $wpdb->insert( $table, $data );
+        }
 
-         $return['action'] = 'success';
-         $return['message'] = 'User authorized!';
+        $return['action'] = 'success';
+        $return['message'] = 'User authorized!';
 
-         return $return;
+        return $return;
     }
 
 }
