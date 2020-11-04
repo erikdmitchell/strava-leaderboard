@@ -162,7 +162,7 @@ final class SLWP {
      * @return array
      */
     public function plugin_action_links( $links ) {
-        $links[] = sprintf( '<a href="%s" target="_blank">%s</a>', '#', __( 'GitHub', 'SLWP' ) );
+        $links[] = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://github.com/erikdmitchell/strava-leaderboard', __( 'GitHub', 'SLWP' ) );
 
         return $links;
     }
