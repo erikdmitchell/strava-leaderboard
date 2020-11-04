@@ -1,8 +1,6 @@
-<?php $data = check_acf(get_the_ID()); ?>
-
 <div id="leaderboard-<?php the_ID(); ?>" class="slwp-leaderboard leaderboard">
-
-	<div class="summary entry-summary slwp">
+    
+	<div class="slwp">
         <?php the_title( '<h1>', '</h1>' ); ?>
 
         <div class="container">
@@ -19,8 +17,8 @@
                     <h3>Segment Efforts</h3>
                 </div>
             </div>
-            <?php echo $data['name']; ?>
-            <?php foreach($data['efforts'] as $effort) : ?>
+            <?php echo $args['name']; ?>
+            <?php foreach($args['efforts'] as $effort) : ?>
                 <div class="row">
                     <div class="col">
                         Time <?php echo $effort['time']; ?>

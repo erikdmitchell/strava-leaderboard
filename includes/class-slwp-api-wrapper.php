@@ -5,15 +5,7 @@ use Swagger\Client\Api;
 
 class SLWP_Api_Wrapper {
 
-    public function __construct() {
-        // $this->init();
-    }
-
-    public function init() {}
-
-    public function get( $action = 'foo' ) {
-        echo "action | $action";
-    }
+    public function __construct() {}
 
     public function get_segment( $athlete_secret = '', $id = 580149 ) {
         $config = Swagger\Client\Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
@@ -77,16 +69,13 @@ class SLWP_Api_Wrapper {
         $config = Swagger\Client\Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
 
         $apiInstance = new Api\ActivitiesApi( new Client(), $config );
-echo "$before | $after<br>";
-        //$before = 56; // int | An epoch timestamp to use for filtering activities that have taken place before a certain time.
-        //$after = 56; // int | An epoch timestamp to use for filtering activities that have taken place after a certain time.
+
         //$page = 56; // int | Page number. Defaults to 1.
         //$per_page = 30; // int | Number of items per page. Defaults to 30.
         
         try {
-            //$result = $apiInstance->getLoggedInAthleteActivities($before, $after, $page, $per_page);
             $result = $apiInstance->getLoggedInAthleteActivities($before, $after);
-print_r($result);            
+           
             return $result;
         } catch (Exception $e) {
             return 'Exception when calling ActivitiesApi->getLoggedInAthleteActivities: ' . $e->getMessage();

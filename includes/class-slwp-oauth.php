@@ -97,14 +97,10 @@ class SLWP_Oauth {
         );
 
         if ($row_id) {
-            echo "update";
-            
             $where = array('id' => $row_id);
             
             $updated = $wpdb->update( $table, $data, $where );    
         } else {
-            echo "insert";
-                      
             $data['athlete_id'] = $response['athlete']['id'];
              
             $wpdb->insert( $table, $data );
@@ -118,14 +114,10 @@ class SLWP_Oauth {
         );
 
         if ($row_id) {
-            echo "update";
-            
             $where = array('id' => $row_id);
             
             $updated = $wpdb->update( $table, $data, $where );    
         } else {
-            echo "insert";
-                      
             $data['athlete_id'] = $response['athlete']['id'];
              
             $wpdb->insert( $table, $data );

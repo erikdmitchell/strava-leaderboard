@@ -48,7 +48,7 @@ function slwp_get_template_part( $slug, $name = '', $args = null ) {
 	$template = apply_filters( 'slwp_get_template_part', $template, $slug, $name );
 
 	if ( $template ) {
-		load_template( $template, false );
+		load_template( $template, false, $args );
 	}
 }
 
@@ -59,15 +59,15 @@ function check_acf($post_id = 0) {
     
     if (!$fields)
         return false;
-echo '<pre>';
-print_r($fields);
-echo '</pre>';
+
     switch ($fields['type']) {
         case 'Segment' :
             $args = single_segment($fields);
+            $args['content_type'] = 'segment';
             break;
         case 'Time' :
             $args = time_lb($fields);
+            $args['content_type'] = 'time';
             break;
     }
 
@@ -111,14 +111,29 @@ function time_lb($fields) {
     $users_data = $users->get_users_data();
 
     foreach ( $users_data as $user ) {
-        //$efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'] );
-$date = new DateTime('10/01/2020'); // format: MM/DD/YYYY
-echo $date->format('U');
-echo '<br>';
         $activities = $api_wrapper->get_athlete_activities( $user->access_token, strtotime($fields['end_date']), strtotime($fields['start_date']) );
         $args['name'] = $fields['name'];
-print_r($activities);        
-
+        $total_distance = 0;
+        $total_time = 0;
+        $activities_count = 0;
+        
+        foreach ($activities as $activity) :
+            $args['activities'][] = array(
+                'id' => $activity->getId(),
+                'distance' => slwp()->format->format_distance( $activity->getDistance() ),
+                'time' => slwp()->format->format_time( $activity->getMovingTime() ),
+                'date' => slwp()->format->format_date( $activity->getStartDate() ),
+                'type' => $activity->getType(),
+            );
+            
+            $total_time = $total_time + $activity->getMovingTime(); // seconds.
+            $total_distance = $total_distance + $activity->getDistance(); // meters.
+            $activities_count++;
+        endforeach;
+        
+        $args['total_time'] = slwp()->format->format_time( $total_time );
+        $args['total_distance'] = slwp()->format->format_distance( $total_distance );
+        $args['activities_count'] = $activities_count;
     }
 
     return $args;    
