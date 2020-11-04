@@ -3,7 +3,7 @@
 class SLWP_Oauth {
 
     public function __construct() {
-        $this->scope = 'read_all,activity:read';
+        $this->scope = 'read,activity:read';
     }
 
     public function authorize_url() {
