@@ -12,7 +12,7 @@ class SLWP_DB_Athletes extends SLWP_DB {
 
         global $wpdb;
 
-        $this->table_name  = $wpdb->prefix . 'pw_orders';
+        $this->table_name  = $wpdb->prefix . 'slwp_athletes';
         $this->primary_key = 'order_id';
         $this->version     = '0.1.0';
 
