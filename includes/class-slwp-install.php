@@ -71,16 +71,6 @@ class SLWP_Install {
             PRIMARY KEY (id)
     	) $charset_collate;";
 
-
-        $sql[] = "CREATE TABLE slwp_tokens_sl (
-            id int(11) unsigned NOT NULL AUTO_INCREMENT,
-            athlete_id int(11) DEFAULT NULL,
-            scope tinyint(1) DEFAULT NULL,
-            access_token varchar(255) DEFAULT NULL,
-            expires_at int(11) DEFAULT NULL,
-            PRIMARY KEY (id)
-    	) $charset_collate;";
-
         $sql[] = "CREATE TABLE swlp_activities (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             activity_id int(11) DEFAULT NULL,
@@ -88,7 +78,7 @@ class SLWP_Install {
             distance decimal(15,2) DEFAULT 0,
             date date,
             leaderboard_id int(11) DEFAULT NULL,
-            PRIMARY KEY (id),
+            PRIMARY KEY (id)
         ) $charset_collate;";
 
         $sql[] = "CREATE TABLE swlp_segments (
@@ -98,10 +88,10 @@ class SLWP_Install {
             date date,
             distance decimal(15,2) DEFAULT 0,
             leaderboard_id int(11) DEFAULT NULL,
-            segment_id activity_id int(11) DEFAULT NULL,
+            segment_id int(11) DEFAULT NULL,
             segment_type varchar(15) DEFAULT NULL,
             time time,
-            PRIMARY KEY (id),
+            PRIMARY KEY (id)
         ) $charset_collate;";
 
 
@@ -113,7 +103,7 @@ class SLWP_Install {
             gender varchar(1) DEFAULT NULL,
             last_name varchar(64) DEFAULT NULL,
             time time,
-            PRIMARY KEY (id),
+            PRIMARY KEY (id)
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
