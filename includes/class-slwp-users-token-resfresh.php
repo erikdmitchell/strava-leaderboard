@@ -1,6 +1,6 @@
 <?php
 
-class SLWP_Users {
+class SLWP_Users_Token_Refresh {
 
     public function __construct() {
         $this->client_id = get_slwp_client_id();
@@ -101,12 +101,6 @@ class SLWP_Users {
          $return['message'] = 'Token updated!';
 
          return $return;
-    }
-
-    public function get_users_data() {
-        global $wpdb;
-
-        return $wpdb->get_results( 'SELECT * from slwp_tokens_sl' );
     }
 
 }
