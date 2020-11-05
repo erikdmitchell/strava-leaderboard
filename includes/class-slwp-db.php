@@ -120,7 +120,7 @@ abstract class SLWP_DB {
         global $wpdb;
 
         $column_where = esc_sql( $column_where );
-        $column       = esc_sql( $column );
+        $column = esc_sql( $column );
 
         return $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $column_where = %s LIMIT 1;", $column_value ) );
     }
