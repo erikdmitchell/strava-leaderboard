@@ -14,8 +14,9 @@ var buildInclude = [
         '**/*.png',
         
         // include specific files and folders
-        'screenshot.png',
+        //'screenshot.png',
         'readme.txt',
+        '/{vendor,vendor/**/*}',
 
         // exclude files and folders
         '!./composer.json', 
@@ -26,7 +27,7 @@ var buildInclude = [
         '!./phpcs.ruleset.xml',
         '!./{sass,sass/**/*}',
         '!./.stylelintrc',
-        '!./{vendor,vendor/**/*}',
+        //'!./{vendor,vendor/**/*}',
         '!svn/**'
     ];
     
