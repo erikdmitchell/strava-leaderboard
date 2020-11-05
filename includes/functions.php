@@ -191,9 +191,3 @@ function slwp_add_weekly_schedule( $schedules ) {
 }
 */
 
-/*
-register_deactivation_hook( __FILE__, 'slwp_remove_user_token_check' );
-function slwp_remove_user_token_check() {
-    wp_clear_scheduled_hook( 'slwp_user_token_check' );
-}
-*/
