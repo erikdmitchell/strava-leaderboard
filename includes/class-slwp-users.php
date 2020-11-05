@@ -8,9 +8,9 @@ class SLWP_Users {
 
     public function check_users_token() {
         global $wpdb;
-
+//echo "check_users_token<br>";
         $users = $wpdb->get_results( 'SELECT * from slwp_tokens_sl' );
-
+//print_r($users);
         // check tokens.
         foreach ( $users as $user ) :
             $this->check_token( $user );
@@ -21,15 +21,18 @@ class SLWP_Users {
         if ( empty( $user ) ) {
             return 'error';
         }
-
+//$this->refresh_token( $user );
+/*
+echo "check_token()<br>";
         $current_time = current_time( 'timestamp' );
 
         if ( $user->expires_at > $current_time ) {
-            // echo 'use existing token<br>';
+            echo 'use existing token<br>';
         } else {
-            // echo 'update token<br>';
+            echo 'update token<br>';
             $this->refresh_token( $user );
         }
+*/
     }
 
     private function refresh_token( $user = '' ) {
