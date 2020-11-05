@@ -102,24 +102,27 @@ function single_segment( $fields ) {
 function time_lb( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
     $users_data = slwp()->users->get_users_data();
+    $data = array();
+    $data['name'] = $fields['name'];
 
     foreach ( $users_data as $user ) {
         $activities = $api_wrapper->get_athlete_activities( $user->access_token, strtotime( $fields['end_date'] ), strtotime( $fields['start_date'] ) );
-        $args['name'] = $fields['name'];
         $total_distance = 0;
         $total_time = 0;
         $activities_count = 0;
         $athlete = $api_wrapper->get_athlete( $user->access_token );
-
-        $args['user_first'] = $athlete->getFirstname();
-        $args['user_last'] = $athlete->getLastname();
+        $athlete_data = array();
+        
+        $athlete_data['athlete_id'] = $user->athlete_id;
+        $athlete_data['firstname'] = $athlete->getFirstname();
+        $athlete_data['lastname'] = $athlete->getLastname();
 
         if ( empty( $activities ) || ! is_array( $activities ) ) {
-            return false;
+            continue;
         }
 
         foreach ( $activities as $activity ) :
-            $args['activities'][] = array(
+            $athlete_data['activities'][] = array(
                 'id' => $activity->getId(),
                 'distance' => slwp()->format->format_distance( $activity->getDistance() ),
                 'time' => slwp()->format->format_time( $activity->getMovingTime() ),
@@ -132,12 +135,14 @@ function time_lb( $fields ) {
             $activities_count++;
         endforeach;
 
-        $args['total_time'] = slwp()->format->format_time( $total_time );
-        $args['total_distance'] = slwp()->format->format_distance( $total_distance );
-        $args['activities_count'] = $activities_count;
+        $athlete_data['total_time'] = slwp()->format->format_time( $total_time );
+        $athlete_data['total_distance'] = slwp()->format->format_distance( $total_distance );
+        $athlete_data['activities_count'] = $activities_count;
+        
+        $data['athletes'][] = $athlete_data;
     }
 
-    return $args;
+    return $data;
 }
 
 function is_field_group_exists( $value, $type = 'post_title' ) {
