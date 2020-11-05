@@ -43,6 +43,8 @@ class SLWP_Install {
 
     public static function create_tables() {
         global $wpdb;
+        
+        $sql = array();
 
         $slwp_db_version = get_option( 'slwp_db_version', 0 );
 
@@ -52,22 +54,67 @@ class SLWP_Install {
 
         $charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE slwp_tokens_refresh (
-            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-            `athlete_id` int(11) DEFAULT NULL,
-            `scope` tinyint(1) DEFAULT NULL,
-            `refresh_token` varchar(255) DEFAULT NULL,
-            PRIMARY KEY (`id`)
+        $sql[] = "CREATE TABLE slwp_tokens_refresh (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            athlete_id int(11) DEFAULT NULL,
+            scope tinyint(1) DEFAULT NULL,
+            refresh_token varchar(255) DEFAULT NULL,
+            PRIMARY KEY (id)
     	) $charset_collate;";
 
-        $sql .= "CREATE TABLE slwp_tokens_sl (
-            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-            `athlete_id` int(11) DEFAULT NULL,
-            `scope` tinyint(1) DEFAULT NULL,
-            `access_token` varchar(255) DEFAULT NULL,
-            `expires_at` int(11) DEFAULT NULL,
-            PRIMARY KEY (`id`)
+        $sql[] = "CREATE TABLE slwp_tokens_sl (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            athlete_id int(11) DEFAULT NULL,
+            scope tinyint(1) DEFAULT NULL,
+            access_token varchar(255) DEFAULT NULL,
+            expires_at int(11) DEFAULT NULL,
+            PRIMARY KEY (id)
     	) $charset_collate;";
+
+
+        $sql[] = "CREATE TABLE slwp_tokens_sl (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            athlete_id int(11) DEFAULT NULL,
+            scope tinyint(1) DEFAULT NULL,
+            access_token varchar(255) DEFAULT NULL,
+            expires_at int(11) DEFAULT NULL,
+            PRIMARY KEY (id)
+    	) $charset_collate;";
+
+        $sql[] = "CREATE TABLE swlp_activities (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            activity_id int(11) DEFAULT NULL,
+            athlete_id int(11) DEFAULT NULL,
+            distance decimal(15,2) DEFAULT 0,
+            date date,
+            leaderboard_id int(11) DEFAULT NULL,
+            PRIMARY KEY (id),
+        ) $charset_collate;";
+
+        $sql[] = "CREATE TABLE swlp_segments (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            activity_id int(11) DEFAULT NULL,
+            athlete_id int(11) DEFAULT NULL,
+            date date,
+            distance decimal(15,2) DEFAULT 0,
+            leaderboard_id int(11) DEFAULT NULL,
+            segment_id activity_id int(11) DEFAULT NULL,
+            segment_type varchar(15) DEFAULT NULL,
+            time time,
+            PRIMARY KEY (id),
+        ) $charset_collate;";
+
+
+        $sql[] = "CREATE TABLE swlp_athletes (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            age varchar(12) DEFAULT NULL,
+            athlete_id int(11) DEFAULT NULL,
+            first_name varchar(60) DEFAULT NULL,
+            gender varchar(1) DEFAULT NULL,
+            last_name varchar(64) DEFAULT NULL,
+            time time,
+            PRIMARY KEY (id),
+        ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
