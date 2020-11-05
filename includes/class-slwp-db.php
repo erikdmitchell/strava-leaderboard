@@ -138,7 +138,7 @@ abstract class SLWP_DB {
         // Set default values
         $data = wp_parse_args( $data, $this->get_column_defaults() );
 
-        do_action( 'edd_pre_insert_' . $type, $data );
+        do_action( 'slwp_pre_insert_' . $type, $data );
 
         // Initialise column format array
         $column_formats = $this->get_columns();
@@ -155,7 +155,7 @@ abstract class SLWP_DB {
 
         $wpdb->insert( $this->table_name, $data, $column_formats );
 
-        do_action( 'edd_post_insert_' . $type, $wpdb->insert_id, $data );
+        do_action( 'slwp_post_insert_' . $type, $wpdb->insert_id, $data );
 
         return $wpdb->insert_id;
     }
