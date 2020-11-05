@@ -43,7 +43,7 @@ class SLWP_Install {
 
     public static function create_tables() {
         global $wpdb;
-        
+
         $sql = array();
 
         $slwp_db_version = get_option( 'slwp_db_version', 0 );
@@ -93,7 +93,6 @@ class SLWP_Install {
             time time,
             PRIMARY KEY (id)
         ) $charset_collate;";
-
 
         $sql[] = "CREATE TABLE swlp_athletes (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,

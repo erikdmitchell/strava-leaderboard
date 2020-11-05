@@ -19,7 +19,7 @@
             </div>
             <?php echo $args['name']; ?>
             
-            <?php foreach ($args['athletes'] as $athlete) : ?>
+            <?php foreach ( $args['athletes'] as $athlete ) : ?>
                 <?php foreach ( $athlete['efforts'] as $effort ) : ?>
                     <div class="row">
                         <div class="col">

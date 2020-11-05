@@ -82,19 +82,19 @@ function single_segment( $fields ) {
     $data['name'] = $fields['name'];
 
     foreach ( $users_data as $user ) {
-// we are setting per page to 1. I think this wil lalways return the fastest time.
+        // we are setting per page to 1. I think this wil lalways return the fastest time.
         $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'], 1 );
         $athlete = $api_wrapper->get_athlete( $user->access_token );
         $athlete_data = array();
 
         $athlete_data['athlete_id'] = $user->athlete_id;
         $athlete_data['firstname'] = $athlete->getFirstname();
-        $athlete_data['lastname'] = $athlete->getLastname();        
-        
+        $athlete_data['lastname'] = $athlete->getLastname();
+
         if ( empty( $efforts ) || ! is_array( $efforts ) ) {
             continue;
         }
-// limit to 1?        
+        // limit to 1?
         foreach ( $efforts as $effort ) :
             $athlete_data['efforts'][] = array(
                 'time' => slwp()->format->format_time( $effort->getElapsedTime() ),
@@ -105,11 +105,11 @@ function single_segment( $fields ) {
                 'prrank' => slwp()->format->pr_rank( $effort->getPrRank() ),
             );
         endforeach;
-        
+
         $data['athletes'][] = $athlete_data;
     }
-// run sort data here
-    return $data;    
+    // run sort data here
+    return $data;
 }
 
 function time_lb( $fields ) {
@@ -125,7 +125,7 @@ function time_lb( $fields ) {
         $activities_count = 0;
         $athlete = $api_wrapper->get_athlete( $user->access_token );
         $athlete_data = array();
-        
+
         $athlete_data['athlete_id'] = $user->athlete_id;
         $athlete_data['firstname'] = $athlete->getFirstname();
         $athlete_data['lastname'] = $athlete->getLastname();
@@ -151,7 +151,7 @@ function time_lb( $fields ) {
         $athlete_data['total_time'] = slwp()->format->format_time( $total_time );
         $athlete_data['total_distance'] = slwp()->format->format_distance( $total_distance );
         $athlete_data['activities_count'] = $activities_count;
-        
+
         $data['athletes'][] = $athlete_data;
     }
 
