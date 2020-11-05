@@ -78,14 +78,24 @@ function check_acf( $post_id = 0 ) {
 function single_segment( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
     $users_data = slwp()->users->get_users_data();
+    $data = array();
+    $data['name'] = $fields['name'];
 
     foreach ( $users_data as $user ) {
         $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'] );
-
-        $args['name'] = $fields['name'];
-
+        $athlete = $api_wrapper->get_athlete( $user->access_token );
+        $athlete_data = array();
+print_r($athlete);        
+        $athlete_data['athlete_id'] = $user->athlete_id;
+        $athlete_data['firstname'] = $athlete->getFirstname();
+        $athlete_data['lastname'] = $athlete->getLastname();        
+        
+        if ( empty( $efforts ) || ! is_array( $efforts ) ) {
+            continue;
+        }
+// limit to 1?        
         foreach ( $efforts as $effort ) :
-            $args['efforts'][] = array(
+            $athlete_data['efforts'][] = array(
                 'time' => slwp()->format->format_time( $effort->getElapsedTime() ),
                 'iskom' => slwp()->format->is_kom( $effort->getIsKom() ),
                 'date' => slwp()->format->format_date( $effort->getStartDate() ),
@@ -94,9 +104,11 @@ function single_segment( $fields ) {
                 'prrank' => slwp()->format->pr_rank( $effort->getPrRank() ),
             );
         endforeach;
+        
+        $data['athletes'][] = $athlete_data;
     }
 
-    return $args;
+    return $data;    
 }
 
 function time_lb( $fields ) {
