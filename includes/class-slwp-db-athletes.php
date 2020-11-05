@@ -9,13 +9,9 @@ class SLWP_DB_Athletes extends SLWP_DB {
      * @since   0.1.0
      */
     public function __construct() {
-
-        global $wpdb;
-
-        $this->table_name  = $wpdb->prefix . 'slwp_athletes';
+        $this->table_name  = 'slwp_athletes';
         $this->primary_key = 'order_id';
         $this->version     = '0.1.0';
-
     }
 
     /**
