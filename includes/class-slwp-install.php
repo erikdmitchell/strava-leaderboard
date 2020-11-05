@@ -71,7 +71,7 @@ class SLWP_Install {
             PRIMARY KEY (id)
     	) $charset_collate;";
 
-        $sql[] = "CREATE TABLE swlp_activities (
+        $sql[] = "CREATE TABLE slwp_activities (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             activity_id int(11) DEFAULT NULL,
             athlete_id int(11) DEFAULT NULL,
@@ -81,7 +81,7 @@ class SLWP_Install {
             PRIMARY KEY (id)
         ) $charset_collate;";
 
-        $sql[] = "CREATE TABLE swlp_segments (
+        $sql[] = "CREATE TABLE slwp_segments (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             activity_id int(11) DEFAULT NULL,
             athlete_id int(11) DEFAULT NULL,
@@ -94,7 +94,7 @@ class SLWP_Install {
             PRIMARY KEY (id)
         ) $charset_collate;";
 
-        $sql[] = "CREATE TABLE swlp_athletes (
+        $sql[] = "CREATE TABLE slwp_athletes (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             age varchar(12) DEFAULT NULL,
             athlete_id int(11) DEFAULT NULL,
