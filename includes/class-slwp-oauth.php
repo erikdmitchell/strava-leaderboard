@@ -104,6 +104,9 @@ class SLWP_Oauth {
             $data['athlete_id'] = $response['athlete']['id'];
 
             $wpdb->insert( $table, $data );
+            
+            // add athlete data.
+            
         }
 
         $table = 'slwp_tokens_refresh';

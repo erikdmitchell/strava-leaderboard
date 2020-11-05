@@ -98,10 +98,10 @@ final class SLWP {
     public function includes() {
         include_once( SLWP_PATH . 'includes/class-slwp-api-format.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-logging.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-users.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-users-token-resfresh.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-oauth.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-athletes.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-db-athletes.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-post-types.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-api-wrapper.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
@@ -111,7 +111,6 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/functions.php' );
 
         $this->format = new SLWP_Api_Format();
-        $this->users = new SLWP_Users();
 
         // load if in admin.
         if ( is_admin() ) {

@@ -52,6 +52,30 @@ function slwp_get_template_part( $slug, $name = '', $args = null ) {
     }
 }
 
+function slwp_add_athlete($access_token = '') {
+    if (empty($access_token) || '' == $access_token)
+        return false;
+
+    // $data['access_token']
+/*
+            'age' => '',
+            'athlete_id' => 0,
+            'first_name' => '',
+            'gender' => '',
+            'last_name' => '',    
+*/
+/*
+            new SLWP_DB_Athletes();
+            SLWP_DB_Athletes->insert(array(
+                
+            ));
+*/
+}
+
+function slwp_get_athletes() {
+    return 'foo';
+}
+
 // acf
 
 function check_acf( $post_id = 0 ) {
