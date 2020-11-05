@@ -105,9 +105,11 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-template-loader.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-url-rewrites.php' );
+        include_once( SLWP_PATH . 'includes/cli/class-slwp-cli-dbsync.php' );        
         include_once( SLWP_PATH . 'includes/functions.php' );
 
         $this->format = new SLWP_Api_Format();
+        $this->users = new SLWP_Users();
 
         // load if in admin.
         if ( is_admin() ) {
@@ -162,7 +164,7 @@ final class SLWP {
      * @return array
      */
     public function plugin_action_links( $links ) {
-        $links[] = sprintf( '<a href="%s" target="_blank">%s</a>', '#', __( 'GitHub', 'SLWP' ) );
+        $links[] = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://github.com/erikdmitchell/strava-leaderboard', __( 'GitHub', 'SLWP' ) );
 
         return $links;
     }

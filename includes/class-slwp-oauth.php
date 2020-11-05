@@ -96,13 +96,13 @@ class SLWP_Oauth {
             'access_token' => $response['access_token'],
         );
 
-        if ($row_id) {
-            $where = array('id' => $row_id);
-            
-            $updated = $wpdb->update( $table, $data, $where );    
+        if ( $row_id ) {
+            $where = array( 'id' => $row_id );
+
+            $updated = $wpdb->update( $table, $data, $where );
         } else {
             $data['athlete_id'] = $response['athlete']['id'];
-             
+
             $wpdb->insert( $table, $data );
         }
 
@@ -113,13 +113,13 @@ class SLWP_Oauth {
             'refresh_token' => $response['refresh_token'],
         );
 
-        if ($row_id) {
-            $where = array('id' => $row_id);
-            
-            $updated = $wpdb->update( $table, $data, $where );    
+        if ( $row_id ) {
+            $where = array( 'id' => $row_id );
+
+            $updated = $wpdb->update( $table, $data, $where );
         } else {
             $data['athlete_id'] = $response['athlete']['id'];
-             
+
             $wpdb->insert( $table, $data );
         }
 

@@ -16,57 +16,58 @@ function slwp_check_url_message() {
 add_action( 'wp_footer', 'slwp_check_url_message' );
 
 function slwp_get_template_part( $slug, $name = '', $args = null ) {
-    $template = false; // this needs to check for cache at some point. 
-    
-	if ( ! $template ) {
-		if ( $name ) {    		
-			$template = locate_template(
-				array(
-					"{$slug}-{$name}.php",
-					SLWP_PATH . "{$slug}-{$name}.php",
-				)
-			);
+    $template = false; // this needs to check for cache at some point.
 
-			if ( ! $template ) {
-				$fallback = SLWP_PATH . "/templates/{$slug}-{$name}.php";
-				$template = file_exists( $fallback ) ? $fallback : '';
-			}
-		}
+    if ( ! $template ) {
+        if ( $name ) {
+            $template = locate_template(
+                array(
+                    "{$slug}-{$name}.php",
+                    SLWP_PATH . "{$slug}-{$name}.php",
+                )
+            );
 
-		if ( ! $template ) {
-			// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/slwp/slug.php.
-			$template = locate_template(
-				array(
-					"{$slug}.php",
-					$template_path . "{$slug}.php",
-				)
-			);			
-		}
-	}
+            if ( ! $template ) {
+                $fallback = SLWP_PATH . "/templates/{$slug}-{$name}.php";
+                $template = file_exists( $fallback ) ? $fallback : '';
+            }
+        }
 
-	// Allow 3rd party plugins to filter template file from their plugin.
-	$template = apply_filters( 'slwp_get_template_part', $template, $slug, $name );
+        if ( ! $template ) {
+            // If template file doesn't exist, look in yourtheme/slug.php and yourtheme/slwp/slug.php.
+            $template = locate_template(
+                array(
+                    "{$slug}.php",
+                    $template_path . "{$slug}.php",
+                )
+            );
+        }
+    }
 
-	if ( $template ) {
-		load_template( $template, false, $args );
-	}
+    // Allow 3rd party plugins to filter template file from their plugin.
+    $template = apply_filters( 'slwp_get_template_part', $template, $slug, $name );
+
+    if ( $template ) {
+        load_template( $template, false, $args );
+    }
 }
 
 // acf
 
-function check_acf($post_id = 0) {
-    $fields = get_fields($post_id);
-    
-    if (!$fields)
-        return false;
+function check_acf( $post_id = 0 ) {
+    $fields = get_fields( $post_id );
 
-    switch ($fields['type']) {
-        case 'Segment' :
-            $args = single_segment($fields);
+    if ( ! $fields ) {
+        return false;
+    }
+
+    switch ( $fields['type'] ) {
+        case 'Segment':
+            $args = single_segment( $fields );
             $args['content_type'] = 'segment';
             break;
-        case 'Time' :
-            $args = time_lb($fields);
+        case 'Time':
+            $args = time_lb( $fields );
             $args['content_type'] = 'time';
             break;
     }
@@ -74,21 +75,28 @@ function check_acf($post_id = 0) {
     return $args;
 }
 
-function single_segment($fields) {
+function single_segment( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
-
-    // App user data.
-    $users = new SLWP_Users();
-    $users->init();
-    $users_data = $users->get_users_data();
+    $users_data = slwp()->users->get_users_data();
+    $data = array();
+    $data['name'] = $fields['name'];
 
     foreach ( $users_data as $user ) {
-        $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'] );
+// we are setting per page to 1. I think this wil lalways return the fastest time.
+        $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'], 1 );
+        $athlete = $api_wrapper->get_athlete( $user->access_token );
+        $athlete_data = array();
 
-        $args['name'] = $fields['name'];
+        $athlete_data['athlete_id'] = $user->athlete_id;
+        $athlete_data['firstname'] = $athlete->getFirstname();
+        $athlete_data['lastname'] = $athlete->getLastname();        
         
+        if ( empty( $efforts ) || ! is_array( $efforts ) ) {
+            continue;
+        }
+// limit to 1?        
         foreach ( $efforts as $effort ) :
-            $args['efforts'][] = array(
+            $athlete_data['efforts'][] = array(
                 'time' => slwp()->format->format_time( $effort->getElapsedTime() ),
                 'iskom' => slwp()->format->is_kom( $effort->getIsKom() ),
                 'date' => slwp()->format->format_date( $effort->getStartDate() ),
@@ -97,58 +105,89 @@ function single_segment($fields) {
                 'prrank' => slwp()->format->pr_rank( $effort->getPrRank() ),
             );
         endforeach;
+        
+        $data['athletes'][] = $athlete_data;
     }
-
-    return $args;    
+// run sort data here
+    return $data;    
 }
 
-function time_lb($fields) {
+function time_lb( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
-
-    // App user data.
-    $users = new SLWP_Users();
-    $users->init();
-    $users_data = $users->get_users_data();
+    $users_data = slwp()->users->get_users_data();
+    $data = array();
+    $data['name'] = $fields['name'];
 
     foreach ( $users_data as $user ) {
-        $activities = $api_wrapper->get_athlete_activities( $user->access_token, strtotime($fields['end_date']), strtotime($fields['start_date']) );
-        $args['name'] = $fields['name'];
+        $activities = $api_wrapper->get_athlete_activities( $user->access_token, strtotime( $fields['end_date'] ), strtotime( $fields['start_date'] ) );
         $total_distance = 0;
         $total_time = 0;
         $activities_count = 0;
+        $athlete = $api_wrapper->get_athlete( $user->access_token );
+        $athlete_data = array();
         
-        foreach ($activities as $activity) :
-            $args['activities'][] = array(
+        $athlete_data['athlete_id'] = $user->athlete_id;
+        $athlete_data['firstname'] = $athlete->getFirstname();
+        $athlete_data['lastname'] = $athlete->getLastname();
+
+        if ( empty( $activities ) || ! is_array( $activities ) ) {
+            continue;
+        }
+
+        foreach ( $activities as $activity ) :
+            $athlete_data['activities'][] = array(
                 'id' => $activity->getId(),
                 'distance' => slwp()->format->format_distance( $activity->getDistance() ),
                 'time' => slwp()->format->format_time( $activity->getMovingTime() ),
                 'date' => slwp()->format->format_date( $activity->getStartDate() ),
                 'type' => $activity->getType(),
             );
-            
+
             $total_time = $total_time + $activity->getMovingTime(); // seconds.
             $total_distance = $total_distance + $activity->getDistance(); // meters.
             $activities_count++;
         endforeach;
+
+        $athlete_data['total_time'] = slwp()->format->format_time( $total_time );
+        $athlete_data['total_distance'] = slwp()->format->format_distance( $total_distance );
+        $athlete_data['activities_count'] = $activities_count;
         
-        $args['total_time'] = slwp()->format->format_time( $total_time );
-        $args['total_distance'] = slwp()->format->format_distance( $total_distance );
-        $args['activities_count'] = $activities_count;
+        $data['athletes'][] = $athlete_data;
     }
 
-    return $args;    
+    return $data;
 }
 
-function is_field_group_exists($value, $type='post_title') {
+function is_field_group_exists( $value, $type = 'post_title' ) {
     $exists = false;
-    
-    if ($field_groups = get_posts(array('post_type'=>'acf-field-group'))) {
-        foreach ($field_groups as $field_group) {
-            if ($field_group->$type == $value) {
+
+    if ( $field_groups = get_posts( array( 'post_type' => 'acf-field-group' ) ) ) {
+        foreach ( $field_groups as $field_group ) {
+            if ( $field_group->$type == $value ) {
                 $exists = true;
             }
         }
     }
-    
+
     return $exists;
 }
+
+function slwp_check_user_tokens() {
+    slwp()->users->check_users_token();
+}
+
+// Hook our function , slwp_check_user_tokens(), into the action slwp_user_token_check
+add_action( 'slwp_user_token_check', 'slwp_check_user_tokens' );
+
+/*
+add_filter( 'cron_schedules', 'slwp_add_weekly_schedule' );
+function slwp_add_weekly_schedule( $schedules ) {
+    $schedules['weekly'] = array(
+        'interval' => 7 * 24 * 60 * 60, // 7 days * 24 hours * 60 minutes * 60 seconds
+        'display' => __( 'Once Weekly', 'slwp' ),
+    );
+
+    return $schedules;
+}
+*/
+
