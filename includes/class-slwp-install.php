@@ -102,7 +102,6 @@ class SLWP_Install {
             first_name varchar(60) DEFAULT NULL,
             gender varchar(1) DEFAULT NULL,
             last_name varchar(64) DEFAULT NULL,
-            time time,
             PRIMARY KEY (id)
         ) $charset_collate;";
 
