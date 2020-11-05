@@ -116,6 +116,9 @@ final class SLWP {
         if ( is_admin() ) {
             include_once( SLWP_PATH . 'includes/admin/class-slwp-admin.php' );
         }
+        
+        //$utr = new SLWP_Users_Token_Refresh();
+        //$utr->check_users_token();
     }
 
     /**
