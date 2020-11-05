@@ -82,10 +82,11 @@ function single_segment( $fields ) {
     $data['name'] = $fields['name'];
 
     foreach ( $users_data as $user ) {
-        $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'] );
+// we are setting per page to 1. I think this wil lalways return the fastest time.
+        $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'], 1 );
         $athlete = $api_wrapper->get_athlete( $user->access_token );
         $athlete_data = array();
-print_r($athlete);        
+
         $athlete_data['athlete_id'] = $user->athlete_id;
         $athlete_data['firstname'] = $athlete->getFirstname();
         $athlete_data['lastname'] = $athlete->getLastname();        
@@ -107,7 +108,7 @@ print_r($athlete);
         
         $data['athletes'][] = $athlete_data;
     }
-
+// run sort data here
     return $data;    
 }
 
