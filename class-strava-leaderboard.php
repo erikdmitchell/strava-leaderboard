@@ -107,7 +107,7 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-template-loader.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-url-rewrites.php' );
-        include_once( SLWP_PATH . 'includes/cli/class-slwp-cli-dbsync.php' );
+        include_once( SLWP_PATH . 'includes/cli/class-slwp-cli.php' );
         include_once( SLWP_PATH . 'includes/functions.php' );
 
         $this->format = new SLWP_Api_Format();
