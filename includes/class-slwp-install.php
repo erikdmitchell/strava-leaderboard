@@ -104,6 +104,13 @@ class SLWP_Install {
             PRIMARY KEY (id)
         ) $charset_collate;";
 
+        $sql[] = "CREATE TABLE slwp_leaderbpard_athletes (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            athlete_id int(11) DEFAULT NULL,
+            leaderboard_id int(11) DEFAULT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
 
