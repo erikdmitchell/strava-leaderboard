@@ -75,8 +75,11 @@ function slwp_add_athlete($access_token = '') {
     ));
 }
 
-function slwp_get_athletes() {
-    return 'foo';
+function slwp_get_athletes($args = '') {
+    $athlete_db = new SLWP_DB_Athletes();
+    $athletes = $athlete_db->get_athletes( $args );
+    
+    return $athletes;
 }
 
 // acf
