@@ -2,15 +2,33 @@
 
 class SLWP_CLI {
 
-    /**
-     * Returns 'Hello World'
-     *
-     * @since  0.0.1
-     * @author Scott Anderson
-     */
-    public function hello_world() {
-        WP_CLI::log( 'Hello World!' );
+    public function bulk_add_athletes() {
+        WP_CLI::log( 'bulk_add_athletes()' );
+        WP_CLI::log( 'we need to get each athlete and then add them to the leaderboard id - can we have it pass the ids?' );
     }
+    
+/*
+public function display_arguments( $args, $assoc_args ) {
+
+	// Run command wp wds display_arguments John Doe 'Jane Doe' 32 --title='Moby Dick' --author='Herman Melville' --published=1851 --publish --no-archive
+
+	// Examples of Arguments.
+	WP_CLI::line( var_export($args[0]) ); // John
+	WP_CLI::line( var_export($args[1]) ); // Doe
+	WP_CLI::line( var_export($args[2]) ); // Jane Doe
+	WP_CLI::line( var_export($args[3]) ); // 32
+
+	// Example of Associated Arguments
+	WP_CLI::line( var_export($assoc_args['title']) );  // Moby Dick
+	WP_CLI::line( var_export($assoc_args['author']) ); // Herman Melville
+	WP_CLI::line( var_export($assoc_args['published']) ); // 1851
+
+	// Example of Associated Arguments as flag
+	WP_CLI::line( var_export($assoc_args['publish']) );  // True
+	WP_CLI::line( var_export($assoc_args['archive']) );  // False
+
+}
+*/    
 
     public function dbsync() {
         WP_CLI::log( 'DB Sync' );
@@ -74,12 +92,6 @@ class SLWP_CLI {
 
 }
 
-/**
- * Registers our command when cli get's initialized.
- *
- * @since  1.0.0
- * @author Scott Anderson
- */
 function slwp_cli_register_commands() {
     WP_CLI::add_command( 'slwp', 'SLWP_CLI' );
 }
