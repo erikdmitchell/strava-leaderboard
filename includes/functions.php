@@ -52,33 +52,37 @@ function slwp_get_template_part( $slug, $name = '', $args = null ) {
     }
 }
 
-function slwp_add_athlete($access_token = '') {
-    if (empty($access_token) || '' == $access_token)
+function slwp_add_athlete( $access_token = '' ) {
+    if ( empty( $access_token ) || '' == $access_token ) {
         return false;
-    
+    }
+
     $api_wrapper = new SLWP_Api_Wrapper();
-    $athlete = $api_wrapper->get_athlete( $access_token );    
+    $athlete = $api_wrapper->get_athlete( $access_token );
 
     $athlete_db = new SLWP_DB_Athletes();
-    
-    $row_id = $athlete_db->get_column_by( 'id', 'athlete_id', $athlete->getID());
-    
-    if ($row_id)
-        return $row_id;
 
-    return $athlete_db->insert(array(
-        'age' => '',
-        'athlete_id' => $athlete->getId(),
-        'first_name' => $athlete->getFirstname(),
-        'gender' => $athlete->getSex(),
-        'last_name' => $athlete->getLastname(),                
-    ));
+    $row_id = $athlete_db->get_column_by( 'id', 'athlete_id', $athlete->getID() );
+
+    if ( $row_id ) {
+        return $row_id;
+    }
+
+    return $athlete_db->insert(
+        array(
+            'age' => '',
+            'athlete_id' => $athlete->getId(),
+            'first_name' => $athlete->getFirstname(),
+            'gender' => $athlete->getSex(),
+            'last_name' => $athlete->getLastname(),
+        )
+    );
 }
 
-function slwp_get_athletes($args = '') {
+function slwp_get_athletes( $args = '' ) {
     $athlete_db = new SLWP_DB_Athletes();
     $athletes = $athlete_db->get_athletes( $args );
-    
+
     return $athletes;
 }
 
@@ -107,8 +111,8 @@ function check_acf( $post_id = 0 ) {
 
 function single_segment( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
-    //$users_data = slwp()->users->get_users_data();
-echo "users_data _deprecated<br>";    
+    // $users_data = slwp()->users->get_users_data();
+    echo 'users_data _deprecated<br>';
     $data = array();
     $data['name'] = $fields['name'];
 
@@ -146,7 +150,7 @@ echo "users_data _deprecated<br>";
 function time_lb( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
     $users_data = slwp()->users->get_users_data();
-echo "users_data _deprecated<br>";     
+    echo 'users_data _deprecated<br>';
     $data = array();
     $data['name'] = $fields['name'];
 

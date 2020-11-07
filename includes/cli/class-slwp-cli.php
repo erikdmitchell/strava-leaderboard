@@ -2,33 +2,50 @@
 
 class SLWP_CLI {
 
-    public function bulk_add_athletes() {
+    public function bulk_add_athletes( $args, $assoc_args ) {
+        global $wpdb;
+
         WP_CLI::log( 'bulk_add_athletes()' );
-        WP_CLI::log( 'we need to get each athlete and then add them to the leaderboard id - can we have it pass the ids?' );
+
+        // setup args.
+        if ( isset( $args[0] ) ) {
+            $athlete_ids = explode( ',', $args[0] );
+        } else {
+            $athlete_ids = $wpdb->get_col( 'SELECT athlete_id FROM slwp_tokens_sl' );
+        }
+
+        if ( isset( $args[1] ) ) {
+            $leaderboard_ids = explode( ',', $args[1] );
+        } else {
+            $leaderboard_ids = get_posts(
+                array(
+                    'posts_per_page' => -1,
+                    'post_type' => 'leaderboard',
+                    'fields' => 'ids',
+                )
+            );
+        }
+
+        // update db.
+        foreach ( $athlete_ids as $athlete_id ) {
+            foreach ( $leaderboard_ids as $leaderboard_id ) {
+                $row_id = $wpdb->get_var( "SELECT id FROM slwp_leaderbpard_athletes WHERE athlete_id = $athlete_id AND leaderboard_id = $leaderboard_id" );
+
+                if ( $row_id ) {
+                    WP_CLI::log( 'Skipped' );
+                } else {
+                    $wpdb->insert(
+                        'slwp_leaderbpard_athletes',
+                        array(
+                            'athlete_id' => $athlete_id,
+                            'leaderboard_id' => $leaderboard_id,
+                        )
+                    );
+                    WP_CLI::log( 'Added' );
+                }
+            }
+        }
     }
-    
-/*
-public function display_arguments( $args, $assoc_args ) {
-
-	// Run command wp wds display_arguments John Doe 'Jane Doe' 32 --title='Moby Dick' --author='Herman Melville' --published=1851 --publish --no-archive
-
-	// Examples of Arguments.
-	WP_CLI::line( var_export($args[0]) ); // John
-	WP_CLI::line( var_export($args[1]) ); // Doe
-	WP_CLI::line( var_export($args[2]) ); // Jane Doe
-	WP_CLI::line( var_export($args[3]) ); // 32
-
-	// Example of Associated Arguments
-	WP_CLI::line( var_export($assoc_args['title']) );  // Moby Dick
-	WP_CLI::line( var_export($assoc_args['author']) ); // Herman Melville
-	WP_CLI::line( var_export($assoc_args['published']) ); // 1851
-
-	// Example of Associated Arguments as flag
-	WP_CLI::line( var_export($assoc_args['publish']) );  // True
-	WP_CLI::line( var_export($assoc_args['archive']) );  // False
-
-}
-*/    
 
     public function dbsync() {
         WP_CLI::log( 'DB Sync' );
