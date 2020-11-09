@@ -103,6 +103,7 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/class-slwp-db.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db-activities.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db-athletes.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-db-segments.php' );        
         include_once( SLWP_PATH . 'includes/class-slwp-post-types.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-api-wrapper.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
