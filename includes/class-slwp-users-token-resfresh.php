@@ -21,7 +21,7 @@ class SLWP_Users_Token_Refresh {
         if ( empty( $user ) ) {
             return 'error';
         }
-        // $this->refresh_token( $user );
+        $this->refresh_token( $user );
         /*
         echo "check_token()<br>";
         $current_time = current_time( 'timestamp' );

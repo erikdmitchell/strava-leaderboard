@@ -1,5 +1,5 @@
 <div id="leaderboard-<?php the_ID(); ?>" class="slwp-leaderboard leaderboard">
-    
+
     <div class="slwp">
         <?php the_title( '<h1>', '</h1>' ); ?>
 

@@ -80,11 +80,43 @@ function slwp_add_athlete( $access_token = '' ) {
 }
 
 function slwp_get_athletes( $args = '' ) {
+    global $wpdb;
+    
     $athlete_db = new SLWP_DB_Athletes();
     $athletes = $athlete_db->get_athletes( $args );
+    
+    // clean this.
+    foreach ($athletes as $athlete) {
+        $athlete->access_token = $wpdb->get_var( 'SELECT access_token from slwp_tokens_sl WHERE athlete_id = ' . $athlete->athlete_id );
+    }
 
     return $athletes;
 }
+
+function slwp_add_activities() {}
+
+function slwp_get_activities() {}
+
+function slwp_add_segments() {}
+
+function slwp_get_segments() {}
+
+// GENERAL WORKFLOW
+/*
+    
+    Webhooks (to be added)
+    
+    Manual (WP CLI)
+    
+    get activity details
+    
+    match to leaderboard
+    
+    update/insert into db
+    
+    le fin
+    
+*/
 
 // acf
 
@@ -111,12 +143,11 @@ function check_acf( $post_id = 0 ) {
 
 function single_segment( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
-    // $users_data = slwp()->users->get_users_data();
-    echo 'users_data _deprecated<br>';
+    $users_data = slwp_get_athletes();
     $data = array();
     $data['name'] = $fields['name'];
 
-    foreach ( $users_data as $user ) {
+    foreach ( $users_data as $user ) {       
         // we are setting per page to 1. I think this wil lalways return the fastest time.
         $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'], 1 );
         $athlete = $api_wrapper->get_athlete( $user->access_token );
@@ -149,8 +180,7 @@ function single_segment( $fields ) {
 
 function time_lb( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
-    $users_data = slwp()->users->get_users_data();
-    echo 'users_data _deprecated<br>';
+    $users_data = slwp_get_athletes();
     $data = array();
     $data['name'] = $fields['name'];
 
@@ -209,7 +239,8 @@ function is_field_group_exists( $value, $type = 'post_title' ) {
 }
 
 function slwp_check_user_tokens() {
-    slwp()->users->check_users_token();
+    //slwp()->users->check_users_token();
+    // DOES NOT WORK
 }
 
 // Hook our function , slwp_check_user_tokens(), into the action slwp_user_token_check
