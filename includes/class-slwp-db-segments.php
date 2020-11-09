@@ -31,7 +31,7 @@ class SLWP_DB_Segments extends SLWP_DB {
             'leaderboard_id' => '%d',
             'segment_id' => '%d',
             'segment_type' => '%s',
-            'time' => '%s',            
+            'time' => '%s',
         );
     }
 
@@ -51,7 +51,7 @@ class SLWP_DB_Segments extends SLWP_DB {
             'leaderboard_id' => '',
             'segment_id' => '',
             'segment_type' => '',
-            'time' => '', 
+            'time' => '',
         );
     }
 
@@ -110,17 +110,16 @@ class SLWP_DB_Segments extends SLWP_DB {
             } else {
                 $where .= ' AND';
             }
-            
+
             if ( is_array( $args['activity_id'] ) ) {
                 $where .= " `activity_id`  IN('" . implode( ',', $args['activity_id'] ) . "') ";
             } else {
                 $where .= " `activity_id` = '" . intval( $args['activity_id'] ) . "' ";
-            }            
-
+            }
         }
 
-// date
-// distance
+        // date
+        // distance
 
         // leaderboard id(s).
         if ( ! empty( $args['leaderboard_id'] ) ) {
@@ -130,15 +129,14 @@ class SLWP_DB_Segments extends SLWP_DB {
             } else {
                 $where .= ' AND';
             }
-            
+
             if ( is_array( $args['leaderboard_id'] ) ) {
                 $where .= " `leaderboard_id`  IN('" . implode( ',', $args['leaderboard_id'] ) . "') ";
             } else {
                 $where .= " `leaderboard_id` = '" . intval( $args['leaderboard_id'] ) . "' ";
-            }            
-
+            }
         }
-        
+
         // segment id(s)
         if ( ! empty( $args['segment_id'] ) ) {
 
@@ -147,17 +145,16 @@ class SLWP_DB_Segments extends SLWP_DB {
             } else {
                 $where .= ' AND';
             }
-            
+
             if ( is_array( $args['segment_id'] ) ) {
                 $where .= " `segment_id`  IN('" . implode( ',', $args['segment_id'] ) . "') ";
             } else {
                 $where .= " `segment_id` = '" . intval( $args['segment_id'] ) . "' ";
-            }            
-
+            }
         }
-        
-// segment type
-// time
+
+        // segment type
+        // time
 
         $args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? $this->primary_key : $args['orderby'];
 

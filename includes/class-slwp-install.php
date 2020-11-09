@@ -73,11 +73,12 @@ class SLWP_Install {
 
         $sql[] = "CREATE TABLE slwp_activities (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            activity_count int(11) DEFAULT 0,
             athlete_id int(11) DEFAULT NULL,
             distance decimal(15,2) DEFAULT 0,
-            date date,
             leaderboard_id int(11) DEFAULT NULL,
             last_updated timestamp,
+            time time,
             PRIMARY KEY (id)
         ) $charset_collate;";
 

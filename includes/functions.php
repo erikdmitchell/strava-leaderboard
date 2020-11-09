@@ -52,6 +52,16 @@ function slwp_get_template_part( $slug, $name = '', $args = null ) {
     }
 }
 
+function slwp_get_leaderboards( $args = array() ) {
+    return get_posts(
+        array(
+            'posts_per_page' => -1,
+            'post_type' => 'leaderboard',
+        // add meta check for active.
+        )
+    );
+}
+
 function slwp_add_athlete( $access_token = '' ) {
     if ( empty( $access_token ) || '' == $access_token ) {
         return false;
@@ -81,19 +91,60 @@ function slwp_add_athlete( $access_token = '' ) {
 
 function slwp_get_athletes( $args = '' ) {
     global $wpdb;
-    
+
     $athlete_db = new SLWP_DB_Athletes();
     $athletes = $athlete_db->get_athletes( $args );
-    
+
     // clean this.
-    foreach ($athletes as $athlete) {
+    foreach ( $athletes as $athlete ) {
         $athlete->access_token = $wpdb->get_var( 'SELECT access_token from slwp_tokens_sl WHERE athlete_id = ' . $athlete->athlete_id );
     }
 
     return $athletes;
 }
 
-function slwp_add_activities() {}
+function slwp_add_activities( $athlete = '', $leaderboard_id = 0, $activities = '', $type = 'Time' ) {
+    if ( empty( $athlete ) || empty( $activities ) || empty( $type ) || ! $leaderboard_id ) {
+        return false;
+    }
+
+    switch ( $type ) {
+        case 'Segment':
+            echo "slwp_add_activities -> Segment\n";
+            break;
+        case 'Time':
+            $activities_db = new SLWP_DB_Activities();
+            // replace below with count
+            $db_activities = $activities_db->get_activities(
+                array(
+                    'athlete_id' => $athlete->athlete_id,
+                    'leaderboard_id' => $leaderboard_id,
+                )
+            );
+
+            $data = array(
+                'activity_count' => $activities['activities_count'],
+                'athlete_id' => $athlete->athlete_id,
+                'distance' => $activities['total_distance'],
+                'leaderboard_id' => $leaderboard_id,
+                'last_updated' => date( 'Y-m-d H:i:s' ),
+                'time' => $activities['total_time'],
+            );
+
+            if ( count( $db_activities ) ) {
+                // update.
+                $row_id = $db_activities[0]->id;
+
+                return $activities_db->update( $row_id, $data ); // returns bool.
+            } else {
+                // add.
+                return $activities_db->insert( $data );
+            }
+            break;
+    }
+
+    return;
+}
 
 function slwp_get_activities() {}
 
@@ -103,20 +154,32 @@ function slwp_get_segments() {}
 
 // GENERAL WORKFLOW
 /*
-    
     Webhooks (to be added)
-    
+
     Manual (WP CLI)
-    
+
     get activity details
-    
+
     match to leaderboard
-    
+
     update/insert into db
-    
+
     le fin
-    
+
 */
+
+function slwp_workflow( $activities = array() ) {
+    echo 'slwp_workflow()<br>';
+    print_r( $activities );
+    echo '<br>';
+
+    if ( empty( $activities ) ) {
+        echo 'no activities found<br>';
+    }
+
+}
+
+// slwp_workflow();
 
 // acf
 
@@ -147,7 +210,7 @@ function single_segment( $fields ) {
     $data = array();
     $data['name'] = $fields['name'];
 
-    foreach ( $users_data as $user ) {       
+    foreach ( $users_data as $user ) {
         // we are setting per page to 1. I think this wil lalways return the fastest time.
         $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'], 1 );
         $athlete = $api_wrapper->get_athlete( $user->access_token );
@@ -224,6 +287,37 @@ function time_lb( $fields ) {
     return $data;
 }
 
+function slwp_clean_time_distance_data( $activities = array() ) {
+    if ( empty( $activities ) || ! is_array( $activities ) ) {
+        return;
+    }
+
+    $total_distance = 0;
+    $total_time = 0;
+    $activities_count = 0;
+    $athlete_data = array();
+
+    foreach ( $activities as $activity ) :
+        $athlete_data['activities'][] = array(
+            'id' => $activity->getId(),
+            'distance' => slwp()->format->format_distance( $activity->getDistance() ),
+            'time' => slwp()->format->format_time( $activity->getMovingTime() ),
+            'date' => slwp()->format->format_date( $activity->getStartDate() ),
+            'type' => $activity->getType(),
+        );
+
+        $total_time = $total_time + $activity->getMovingTime(); // seconds.
+        $total_distance = $total_distance + $activity->getDistance(); // meters.
+        $activities_count++;
+    endforeach;
+
+    $athlete_data['total_time'] = slwp()->format->format_time( $total_time );
+    $athlete_data['total_distance'] = slwp()->format->format_distance( $total_distance );
+    $athlete_data['activities_count'] = $activities_count;
+
+    return $athlete_data;
+}
+
 function is_field_group_exists( $value, $type = 'post_title' ) {
     $exists = false;
 
@@ -239,7 +333,7 @@ function is_field_group_exists( $value, $type = 'post_title' ) {
 }
 
 function slwp_check_user_tokens() {
-    //slwp()->users->check_users_token();
+    // slwp()->users->check_users_token();
     // DOES NOT WORK
 }
 

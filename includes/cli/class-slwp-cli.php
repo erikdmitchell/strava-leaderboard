@@ -2,6 +2,31 @@
 
 class SLWP_CLI {
 
+    // TEMP
+    public function add_activity() {
+        $api_wrapper = new SLWP_Api_Wrapper();
+        $athletes = slwp_get_athletes();
+
+        WP_CLI::log( 'add_activity()' );
+
+        // hardcodes -> Oct Challenge.
+        $start_date = '10/01/2020';
+        $end_date = '10/31/2020';
+        $leaderboard_id = 41;
+
+        // slwp_get_leaderboards()
+
+        foreach ( $athletes as $athlete ) {
+            // WP_CLI::log( $athlete->access_token );
+
+            $activities = $api_wrapper->get_athlete_activities( $athlete->access_token, strtotime( $end_date ), strtotime( $start_date ) );
+            $activities_clean = slwp_clean_time_distance_data( $activities );
+
+            slwp_add_activities( $athlete, $leaderboard_id, $activities_clean, 'Time' );
+        }
+
+    }
+
     public function bulk_add_athletes( $args, $assoc_args ) {
         global $wpdb;
 

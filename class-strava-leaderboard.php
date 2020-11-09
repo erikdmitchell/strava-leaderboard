@@ -103,7 +103,7 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/class-slwp-db.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db-activities.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db-athletes.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-db-segments.php' );        
+        include_once( SLWP_PATH . 'includes/class-slwp-db-segments.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-post-types.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-api-wrapper.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
@@ -119,8 +119,8 @@ final class SLWP {
             include_once( SLWP_PATH . 'includes/admin/class-slwp-admin.php' );
         }
 
-        //$utr = new SLWP_Users_Token_Refresh();
-        //$utr->check_users_token();
+        // $utr = new SLWP_Users_Token_Refresh();
+        // $utr->check_users_token();
     }
 
     /**

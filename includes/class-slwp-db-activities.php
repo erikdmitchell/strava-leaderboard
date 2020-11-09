@@ -9,7 +9,7 @@ class SLWP_DB_Activities extends SLWP_DB {
      * @since   0.1.0
      */
     public function __construct() {
-        $this->table_name  = 'slwp_activties';
+        $this->table_name  = 'slwp_activities';
         $this->primary_key = 'id';
         $this->version     = '0.1.0';
     }
@@ -23,11 +23,12 @@ class SLWP_DB_Activities extends SLWP_DB {
     public function get_columns() {
         return array(
             'id' => '%d',
+            'activity_count' => '%d',
             'athlete_id' => '%d',
             'distance' => '%s',
-            'date' => '%s',
             'leaderboard_id' => '%d',
-            'last_updated' => '%s',            
+            'last_updated' => '%s',
+            'time' => '%s',
         );
     }
 
@@ -39,11 +40,12 @@ class SLWP_DB_Activities extends SLWP_DB {
      */
     public function get_column_defaults() {
         return array(
+            'activity_count' => 0,
             'athlete_id' => '',
             'distance' => '0.00',
-            'date' => '',
             'leaderboard_id' => '',
             'last_updated' => '',
+            'time' => '',
         );
     }
 
@@ -65,6 +67,7 @@ class SLWP_DB_Activities extends SLWP_DB {
             'leaderboard_id' => 0,
             'distance' => '', // not supported.
             'last_updated' => '', // not supported.
+            'time' => '', // not supported.
             'orderby' => 'distance',
             'order' => 'DESC',
         );
@@ -98,13 +101,12 @@ class SLWP_DB_Activities extends SLWP_DB {
             } else {
                 $where .= ' AND';
             }
-            
+
             if ( is_array( $args['leaderboard_id'] ) ) {
                 $where .= " `leaderboard_id`  IN('" . implode( ',', $args['leaderboard_id'] ) . "') ";
             } else {
                 $where .= " `leaderboard_id` = '" . intval( $args['leaderboard_id'] ) . "' ";
             }
-            
         }
 
         $args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? $this->primary_key : $args['orderby'];
