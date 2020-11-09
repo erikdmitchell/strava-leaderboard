@@ -88,6 +88,7 @@ class SLWP_Install {
             date date,
             distance decimal(15,2) DEFAULT 0,
             leaderboard_id int(11) DEFAULT NULL,
+            last_updated timestamp,
             segment_id int(11) DEFAULT NULL,
             segment_type varchar(15) DEFAULT NULL,
             time time,
