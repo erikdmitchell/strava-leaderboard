@@ -77,7 +77,7 @@ class SLWP_Install {
             distance decimal(15,2) DEFAULT 0,
             date date,
             leaderboard_id int(11) DEFAULT NULL,
-            time time,
+            last_updated timestamp,
             PRIMARY KEY (id)
         ) $charset_collate;";
 
