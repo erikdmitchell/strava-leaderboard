@@ -10,7 +10,7 @@ class SLWP_DB_Athletes extends SLWP_DB {
      */
     public function __construct() {
         $this->table_name  = 'slwp_athletes';
-        $this->primary_key = 'order_id';
+        $this->primary_key = 'id';
         $this->version     = '0.1.0';
     }
 
