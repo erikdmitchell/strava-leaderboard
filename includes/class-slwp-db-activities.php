@@ -65,7 +65,7 @@ class SLWP_DB_Activities extends SLWP_DB {
             'leaderboard_id' => 0,
             'distance' => '', // not supported.
             'last_updated' => '', // not supported.
-            'orderby' => 'first_name',
+            'orderby' => 'distance',
             'order' => 'DESC',
         );
 
@@ -103,13 +103,8 @@ class SLWP_DB_Activities extends SLWP_DB {
                 $where .= " `leaderboard_id`  IN('" . implode( ',', $args['leaderboard_id'] ) . "') ";
             } else {
                 $where .= " `leaderboard_id` = '" . intval( $args['leaderboard_id'] ) . "' ";
-            }            
-
-            if ( is_array( $args['age'] ) ) {
-                $where .= " `age` IN('" . implode( "','", $args['age'] ) . "') ";
-            } else {
-                $where .= " `age` = '" . $args['age'] . "' ";
             }
+            
         }
 
         $args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? $this->primary_key : $args['orderby'];
