@@ -195,7 +195,12 @@ function slwp_add_segments( $athlete = '', $leaderboard_id = 0, $efforts = array
     return;
 }
 
-function slwp_get_segments() {}
+function slwp_get_segments( $args = array() ) {
+    $db = new SLWP_DB_Segments();
+    $segments = $db->get_segments( $args );
+
+    return $segments;
+}
 
 function slwp_clean_time_distance_data( $activities = '' ) {
     if ( empty( $activities ) ) {
@@ -298,7 +303,12 @@ function check_acf( $post_id = 0 ) {
 
     switch ( $fields['type'] ) {
         case 'Segment':
-            // $args = single_segment( $fields );
+            $args['segments'] = slwp_get_segments(
+                array(
+                    'leaderboard_id' => $post_id,
+                    'segment_id' => 1354300, // would come from post meta.
+                )
+            );
             $args['content_type'] = 'segment';
             break;
         case 'Time':

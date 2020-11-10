@@ -17,30 +17,28 @@
                     <h3>Segment Efforts</h3>
                 </div>
             </div>
-            <?php echo $args['name']; ?>
+            <?php // echo $args['name']; ?>
+            ACF Name (not set)
             
-            <?php foreach ( $args['athletes'] as $athlete ) : ?>
-                <?php foreach ( $athlete['efforts'] as $effort ) : ?>
-                    <div class="row">
-                        <div class="col">
-                            <?php echo $athlete['firstname']; ?> <?php echo $athlete['lastname']; ?>
-                        </div>
-                        <div class="col">
-                            Time <?php echo $effort['time']; ?>
-                            <?php echo $effort['iskom']; ?>
-                        </div>
-                        <div class="col">
-                            <?php echo $effort['date']; ?>
-                        </div>
-                        <div class="col">
-                            <?php echo $effort['activityurl']; ?>
-                        </div>
-                        <div class="col">
-                            <?php echo $effort['komrank']; ?><br />
-                            <?php echo $effort['prrank']; ?>
-                        </div>
+            <?php foreach ( $args['segments'] as $segment ) : ?>
+                <div class="row">
+                    <div class="col">
+                        <?php echo slwp_get_athlete_name( $segment->athlete_id ); ?>
                     </div>
-                <?php endforeach; ?>
+                    <div class="col">
+                        Time <?php echo $segment->time; ?>
+                    </div>
+                    <div class="col">
+                        <?php echo $segment->date; ?>
+                    </div>
+                    <div class="col">
+                        <?php // echo $effort['activityurl']; ?>
+                    </div>
+                    <div class="col">
+                        <?php // echo $effort['komrank']; ?><br />
+                        <?php // echo $effort['prrank']; ?>
+                    </div>
+                </div>
             <?php endforeach; ?>
         </div>
 
