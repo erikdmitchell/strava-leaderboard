@@ -15,10 +15,10 @@ class SLWP_CLI {
         // $leaderboard_id = 41;
 
         // hardcodes -> segment. - becomes an arg
-        $start_date = '01/01/2020';
-        $end_date = date( 'm/d/Y' );
-        $leaderboard_id = 40;
-        $segment_id = 1139795;
+        // $start_date = '01/01/2020';
+        // $end_date = date( 'm/d/Y' );
+        // $leaderboard_id = 40;
+        // $segment_id = 1139795;
 
         // slwp_get_leaderboards()
         echo "$leaderboard_id | $start_date | $end_date\n";
@@ -31,18 +31,20 @@ class SLWP_CLI {
         }
         */
 
+        /*
         foreach ( $athletes as $athlete ) {
             $efforts = $api_wrapper->get_segment_efforts( $athlete->access_token, $segment_id, $start_date, $end_date, 1 );
             $efforts_clean = slwp_clean_segments_data( $efforts );
 
             slwp_add_segments( $athlete, $leaderboard_id, $efforts_clean, $segment_id );
         }
+        */
 
         WP_CLI::success( 'Activities added.' );
 
     }
 
-    public function bulk_add_athletes( $args, $assoc_args ) {
+    public function bulk_add_athletes_to_leaderboards( $args, $assoc_args ) {
         global $wpdb;
 
         WP_CLI::log( 'bulk_add_athletes()' );
@@ -83,6 +85,38 @@ class SLWP_CLI {
                     );
                     WP_CLI::log( 'Added' );
                 }
+            }
+        }
+    }
+
+    public function bulk_add_athletes() {
+        global $wpdb;
+
+        WP_CLI::log( 'bulk_add_athletes()' );
+
+        $athlete_data = $wpdb->get_results( 'SELECT * FROM slwp_tokens_sl' );
+        $api_wrapper = new SLWP_Api_Wrapper();
+
+        foreach ( $athlete_data as $db_athlete ) {
+            $athlete = $api_wrapper->get_athlete( $db_athlete->access_token );
+
+            $row_id = $wpdb->get_var( "SELECT id FROM slwp_athletes WHERE athlete_id = $db_athlete->athlete_id" );
+
+            if ( $row_id ) {
+                WP_CLI::log( 'Skipped' );
+            } else { // below should be run via custom db
+                $wpdb->insert(
+                    'slwp_athletes',
+                    array(
+                        'athlete_id' => $db_athlete->athlete_id,
+                        'first_name' => $athlete->getFirstname(),
+                        'last_name' => $athlete->getLastname(),
+                        'gender' => $athlete->getSex(),
+                        // 'age' => '', // not provided.
+                    )
+                );
+
+                WP_CLI::log( 'Added' );
             }
         }
     }

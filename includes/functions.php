@@ -174,7 +174,6 @@ function slwp_add_segments( $athlete = '', $leaderboard_id = 0, $efforts = array
             'segment_type' => '', // need to get from leaderboard meta.
             'time' => $effort['time'],
         );
-        print_r( $data );
 
         if ( count( $db_segments ) ) {
             // update.
