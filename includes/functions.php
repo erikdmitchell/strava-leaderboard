@@ -156,6 +156,7 @@ function slwp_add_segments( $athlete = '', $leaderboard_id = 0, $efforts = array
             array(
                 'athlete_id' => $athlete->athlete_id,
                 'leaderboard_id' => $leaderboard_id,
+                'segment_id' => $segment->getId(),
             )
         );
 
