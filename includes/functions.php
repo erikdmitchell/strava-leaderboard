@@ -139,7 +139,12 @@ function slwp_add_activities( $athlete = '', $leaderboard_id = 0, $activities = 
     return;
 }
 
-function slwp_get_activities() {}
+function slwp_get_activities( $args = array() ) {
+    $db = new SLWP_DB_Activities();
+    $activities = $db->get_activities( $args );
+
+    return $activities;
+}
 
 function slwp_add_segments( $athlete = '', $leaderboard_id = 0, $efforts = array(), $segment_id = 0, $type = 'Segment' ) {
     if ( empty( $athlete ) || empty( $efforts ) || ! $leaderboard_id || ! $segment_id ) {
@@ -191,145 +196,6 @@ function slwp_add_segments( $athlete = '', $leaderboard_id = 0, $efforts = array
 }
 
 function slwp_get_segments() {}
-
-// GENERAL WORKFLOW
-/*
-    Webhooks (to be added)
-
-    Manual (WP CLI)
-
-    get activity details
-
-    match to leaderboard
-
-    update/insert into db
-
-    le fin
-
-*/
-
-function slwp_workflow( $activities = array() ) {
-    echo 'slwp_workflow()<br>';
-    print_r( $activities );
-    echo '<br>';
-
-    if ( empty( $activities ) ) {
-        echo 'no activities found<br>';
-    }
-
-}
-
-// slwp_workflow();
-
-// acf
-
-function check_acf( $post_id = 0 ) {
-    $fields = get_fields( $post_id );
-
-    if ( ! $fields ) {
-        return false;
-    }
-
-    switch ( $fields['type'] ) {
-        case 'Segment':
-            $args = single_segment( $fields );
-            $args['content_type'] = 'segment';
-            break;
-        case 'Time':
-            $args = time_lb( $fields );
-            $args['content_type'] = 'time';
-            break;
-    }
-
-    return $args;
-}
-
-/*
-function single_segment( $fields ) {
-    $api_wrapper = new SLWP_Api_Wrapper();
-    $users_data = slwp_get_athletes();
-    $data = array();
-    $data['name'] = $fields['name'];
-
-    foreach ( $users_data as $user ) {
-        // we are setting per page to 1. I think this wil lalways return the fastest time.
-        $efforts = $api_wrapper->get_segment_efforts( $user->access_token, $fields['segments'][0]['segment'], $fields['start_date'], $fields['end_date'], 1 );
-        $athlete = $api_wrapper->get_athlete( $user->access_token );
-        $athlete_data = array();
-
-        $athlete_data['athlete_id'] = $user->athlete_id;
-        $athlete_data['firstname'] = $athlete->getFirstname();
-        $athlete_data['lastname'] = $athlete->getLastname();
-
-        if ( empty( $efforts ) || ! is_array( $efforts ) ) {
-            continue;
-        }
-        // limit to 1?
-        foreach ( $efforts as $effort ) :
-            $athlete_data['efforts'][] = array(
-                'time' => slwp()->format->format_time( $effort->getElapsedTime() ),
-                'iskom' => slwp()->format->is_kom( $effort->getIsKom() ),
-                'date' => slwp()->format->format_date( $effort->getStartDate() ),
-                'activityurl' => $api_wrapper->get_activity_url_by_id( $effort->getActivity() ),
-                'komrank' => slwp()->format->kom_rank( $effort->getKomRank() ),
-                'prrank' => slwp()->format->pr_rank( $effort->getPrRank() ),
-            );
-        endforeach;
-
-        $data['athletes'][] = $athlete_data;
-    }
-    // run sort data here
-    return $data;
-}
-*/
-
-/*
-function time_lb( $fields ) {
-    $api_wrapper = new SLWP_Api_Wrapper();
-    $users_data = slwp_get_athletes();
-    $data = array();
-    $data['name'] = $fields['name'];
-
-    foreach ( $users_data as $user ) {
-        $activities = $api_wrapper->get_athlete_activities( $user->access_token, strtotime( $fields['end_date'] ), strtotime( $fields['start_date'] ) );
-        $total_distance = 0;
-        $total_time = 0;
-        $activities_count = 0;
-        $athlete = $api_wrapper->get_athlete( $user->access_token );
-        $athlete_data = array();
-
-        $athlete_data['athlete_id'] = $user->athlete_id;
-        $athlete_data['firstname'] = $athlete->getFirstname();
-        $athlete_data['lastname'] = $athlete->getLastname();
-
-        if ( empty( $activities ) || ! is_array( $activities ) ) {
-            continue;
-        }
-
-        foreach ( $activities as $activity ) :
-            $athlete_data['activities'][] = array(
-                'id' => $activity->getId(),
-                'distance' => slwp()->format->format_distance( $activity->getDistance() ),
-                'time' => slwp()->format->format_time( $activity->getMovingTime() ),
-                'date' => slwp()->format->format_date( $activity->getStartDate() ),
-                'type' => $activity->getType(),
-            );
-
-            $total_time = $total_time + $activity->getMovingTime(); // seconds.
-            $total_distance = $total_distance + $activity->getDistance(); // meters.
-            $activities_count++;
-        endforeach;
-
-        $athlete_data['total_time'] = slwp()->format->format_time( $total_time );
-        $athlete_data['total_distance'] = slwp()->format->format_distance( $total_distance );
-        $athlete_data['activities_count'] = $activities_count;
-
-        $data['athletes'][] = $athlete_data;
-    }
-
-    return $data;
-}
-*/
 
 function slwp_clean_time_distance_data( $activities = '' ) {
     if ( empty( $activities ) ) {
@@ -384,7 +250,72 @@ function slwp_clean_segments_data( $segment_efforts = '' ) {
     return $athlete_data;
 }
 
-function is_field_group_exists( $value, $type = 'post_title' ) {
+function slwp_get_athlete_name( $athlete_id = 0 ) {
+    $db = new SLWP_DB_Athletes();
+
+    $first = $db->get_column_by( 'first_name', 'athlete_id', $athlete_id );
+    $last = $db->get_column_by( 'last_name', 'athlete_id', $athlete_id );
+
+    return $first . ' ' . $last; // add filter.
+}
+
+// GENERAL WORKFLOW
+/*
+    Webhooks (to be added)
+
+    Manual (WP CLI)
+
+    get activity details
+
+    match to leaderboard
+
+    update/insert into db
+
+    le fin
+
+*/
+
+function slwp_workflow( $activities = array() ) {
+    echo 'slwp_workflow()<br>';
+    print_r( $activities );
+    echo '<br>';
+
+    if ( empty( $activities ) ) {
+        echo 'no activities found<br>';
+    }
+
+}
+
+// slwp_workflow();
+
+// acf
+function check_acf( $post_id = 0 ) {
+    $fields = get_fields( $post_id );
+
+    if ( ! $fields ) {
+        return false;
+    }
+
+    switch ( $fields['type'] ) {
+        case 'Segment':
+            // $args = single_segment( $fields );
+            $args['content_type'] = 'segment';
+            break;
+        case 'Time':
+            $args['activities'] = slwp_get_activities(
+                array(
+                    'leaderboard_id' => $post_id,
+                    'orderby' => 'time',
+                )
+            );
+            $args['content_type'] = 'time';
+            break;
+    }
+
+    return $args;
+}
+
+function acf_is_field_group_exists( $value, $type = 'post_title' ) {
     $exists = false;
 
     if ( $field_groups = get_posts( array( 'post_type' => 'acf-field-group' ) ) ) {

@@ -17,21 +17,22 @@
                     <h3>Time Leaderboard</h3>
                 </div>
             </div>
-            <?php echo $args['name']; ?>
+            <?php // echo $args['name']; ?>
+            ACF Name (not set)
 
-            <?php foreach ( $args['athletes'] as $athlete ) : ?>
+            <?php foreach ( $args['activities'] as $activity ) : ?>
                 <div class="row">
                     <div class="col">
-                        <?php echo $athlete['firstname']; ?> <?php echo $athlete['lastname']; ?>
+                        <?php echo slwp_get_athlete_name( $activity->athlete_id ); ?>
                     </div>
                     <div class="col">
-                        Time: <?php echo $athlete['total_time']; ?>
+                        Time: <?php echo $activity->time; ?>
                     </div>
                     <div class="col">
-                        Distance: <?php echo $athlete['total_distance']; ?>
+                        Distance: <?php echo $activity->distance; ?>
                     </div>
                     <div class="col">
-                        Activities: <?php echo $athlete['activities_count']; ?>
+                        Activities: <?php echo $activity->activity_count; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
