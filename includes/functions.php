@@ -104,43 +104,36 @@ function slwp_get_athletes( $args = '' ) {
 }
 
 function slwp_add_activities( $athlete = '', $leaderboard_id = 0, $activities = '', $type = 'Time' ) {
-    if ( empty( $athlete ) || empty( $activities ) || empty( $type ) || ! $leaderboard_id ) {
+    if ( empty( $athlete ) || empty( $activities ) || ! $leaderboard_id ) {
         return false;
     }
 
-    switch ( $type ) {
-        case 'Segment':
-            echo "slwp_add_activities -> Segment\n";
-            break;
-        case 'Time':
-            $activities_db = new SLWP_DB_Activities();
-            // replace below with count
-            $db_activities = $activities_db->get_activities(
-                array(
-                    'athlete_id' => $athlete->athlete_id,
-                    'leaderboard_id' => $leaderboard_id,
-                )
-            );
+    $activities_db = new SLWP_DB_Activities();
+    // replace below with count - run get activities func
+    $db_activities = $activities_db->get_activities(
+        array(
+            'athlete_id' => $athlete->athlete_id,
+            'leaderboard_id' => $leaderboard_id,
+        )
+    );
 
-            $data = array(
-                'activity_count' => $activities['activities_count'],
-                'athlete_id' => $athlete->athlete_id,
-                'distance' => $activities['total_distance'],
-                'leaderboard_id' => $leaderboard_id,
-                'last_updated' => date( 'Y-m-d H:i:s' ),
-                'time' => $activities['total_time'],
-            );
+    $data = array(
+        'activity_count' => $activities['activities_count'],
+        'athlete_id' => $athlete->athlete_id,
+        'distance' => $activities['total_distance'],
+        'last_updated' => date( 'Y-m-d H:i:s' ),
+        'leaderboard_id' => $leaderboard_id,
+        'time' => $activities['total_time'],
+    );
 
-            if ( count( $db_activities ) ) {
-                // update.
-                $row_id = $db_activities[0]->id;
+    if ( count( $db_activities ) ) {
+        // update.
+        $row_id = $db_activities[0]->id;
 
-                return $activities_db->update( $row_id, $data ); // returns bool.
-            } else {
-                // add.
-                return $activities_db->insert( $data );
-            }
-            break;
+        return $activities_db->update( $row_id, $data ); // returns bool.
+    } else {
+        // add.
+        return $activities_db->insert( $data );
     }
 
     return;
@@ -148,7 +141,54 @@ function slwp_add_activities( $athlete = '', $leaderboard_id = 0, $activities = 
 
 function slwp_get_activities() {}
 
-function slwp_add_segments() {}
+function slwp_add_segments( $athlete = '', $leaderboard_id = 0, $efforts = array(), $segment_id = 0, $type = 'Segment' ) {
+    if ( empty( $athlete ) || empty( $efforts ) || ! $leaderboard_id || ! $segment_id ) {
+        return false;
+    }
+
+    $api_wrapper = new SLWP_Api_Wrapper();
+    $segment = $api_wrapper->get_segment( $athlete->access_token, $segment_id );
+    $segments_db = new SLWP_DB_Segments();
+
+    foreach ( $efforts as $effort ) {
+        // replace below with count - run get segment func
+        $db_segments = $segments_db->get_segments(
+            array(
+                'athlete_id' => $athlete->athlete_id,
+                'leaderboard_id' => $leaderboard_id,
+            )
+        );
+
+        // below converts date for mysql - it's dirty.
+        $effort_date_arr = explode( '-', $effort['date'] );
+        $effort_date = $effort_date_arr[2] . '-' . $effort_date_arr[0] . '-' . $effort_date_arr[1];
+
+        $data = array(
+            'activity_id' => '', // we pass the url
+            'athlete_id' => $athlete->athlete_id,
+            'date' => $effort_date,
+            'distance' => $segment->getDistance(),
+            'last_updated' => date( 'Y-m-d H:i:s' ),
+            'leaderboard_id' => $leaderboard_id,
+            'segment_id' => $segment->getId(),
+            'segment_type' => '', // need to get from leaderboard meta.
+            'time' => $effort['time'],
+        );
+        print_r( $data );
+
+        if ( count( $db_segments ) ) {
+            // update.
+            $row_id = $db_segments[0]->id;
+
+            return $segments_db->update( $row_id, $data ); // returns bool.
+        } else {
+            // add.
+            return $segments_db->insert( $data );
+        }
+    }
+
+    return;
+}
 
 function slwp_get_segments() {}
 
@@ -204,6 +244,7 @@ function check_acf( $post_id = 0 ) {
     return $args;
 }
 
+/*
 function single_segment( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
     $users_data = slwp_get_athletes();
@@ -240,7 +281,9 @@ function single_segment( $fields ) {
     // run sort data here
     return $data;
 }
+*/
 
+/*
 function time_lb( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
     $users_data = slwp_get_athletes();
@@ -286,9 +329,10 @@ function time_lb( $fields ) {
 
     return $data;
 }
+*/
 
-function slwp_clean_time_distance_data( $activities = array() ) {
-    if ( empty( $activities ) || ! is_array( $activities ) ) {
+function slwp_clean_time_distance_data( $activities = '' ) {
+    if ( empty( $activities ) ) {
         return;
     }
 
@@ -314,6 +358,28 @@ function slwp_clean_time_distance_data( $activities = array() ) {
     $athlete_data['total_time'] = slwp()->format->format_time( $total_time );
     $athlete_data['total_distance'] = slwp()->format->format_distance( $total_distance );
     $athlete_data['activities_count'] = $activities_count;
+
+    return $athlete_data;
+}
+
+function slwp_clean_segments_data( $segment_efforts = '' ) {
+    if ( empty( $segment_efforts ) ) {
+        return;
+    }
+
+    $api_wrapper = new SLWP_Api_Wrapper();
+    $athlete_data = array();
+
+    foreach ( $segment_efforts as $effort ) :
+        $athlete_data[] = array(
+            'time' => slwp()->format->format_time( $effort->getElapsedTime() ),
+            'iskom' => slwp()->format->is_kom( $effort->getIsKom() ),
+            'date' => slwp()->format->format_date( $effort->getStartDate() ),
+            'activityurl' => $api_wrapper->get_activity_url_by_id( $effort->getActivity() ),
+            'komrank' => slwp()->format->kom_rank( $effort->getKomRank() ),
+            'prrank' => slwp()->format->pr_rank( $effort->getPrRank() ),
+        );
+    endforeach;
 
     return $athlete_data;
 }

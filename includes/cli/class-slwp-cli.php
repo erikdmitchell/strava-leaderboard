@@ -3,27 +3,42 @@
 class SLWP_CLI {
 
     // TEMP
-    public function add_activity() {
+    public function add_activity( $args, $assoc_args ) {
         $api_wrapper = new SLWP_Api_Wrapper();
         $athletes = slwp_get_athletes();
 
         WP_CLI::log( 'add_activity()' );
 
-        // hardcodes -> Oct Challenge.
-        $start_date = '10/01/2020';
-        $end_date = '10/31/2020';
-        $leaderboard_id = 41;
+        // hardcodes -> Oct Challenge. - becomes an arg
+        // $start_date = '10/01/2020';
+        // $end_date = '10/31/2020';
+        // $leaderboard_id = 41;
+
+        // hardcodes -> segment. - becomes an arg
+        $start_date = '01/01/2020';
+        $end_date = date( 'm/d/Y' );
+        $leaderboard_id = 40;
+        $segment_id = 1139795;
 
         // slwp_get_leaderboards()
-
+        echo "$leaderboard_id | $start_date | $end_date\n";
+        /*
         foreach ( $athletes as $athlete ) {
-            // WP_CLI::log( $athlete->access_token );
-
             $activities = $api_wrapper->get_athlete_activities( $athlete->access_token, strtotime( $end_date ), strtotime( $start_date ) );
             $activities_clean = slwp_clean_time_distance_data( $activities );
 
-            slwp_add_activities( $athlete, $leaderboard_id, $activities_clean, 'Time' );
+            slwp_add_activities( $athlete, $leaderboard_id, $activities_clean );
         }
+        */
+
+        foreach ( $athletes as $athlete ) {
+            $efforts = $api_wrapper->get_segment_efforts( $athlete->access_token, $segment_id, $start_date, $end_date, 1 );
+            $efforts_clean = slwp_clean_segments_data( $efforts );
+
+            slwp_add_segments( $athlete, $leaderboard_id, $efforts_clean, $segment_id );
+        }
+
+        WP_CLI::success( 'Activities added.' );
 
     }
 
