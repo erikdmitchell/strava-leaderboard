@@ -43,7 +43,7 @@ class SLWP_Install {
 
     public static function create_tables() {
         global $wpdb;
-        
+
         $sql = array();
 
         $slwp_db_version = get_option( 'slwp_db_version', 0 );
@@ -71,38 +71,45 @@ class SLWP_Install {
             PRIMARY KEY (id)
     	) $charset_collate;";
 
-        $sql[] = "CREATE TABLE swlp_activities (
+        $sql[] = "CREATE TABLE slwp_activities (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
-            activity_id int(11) DEFAULT NULL,
+            activity_count int(11) DEFAULT 0,
             athlete_id int(11) DEFAULT NULL,
             distance decimal(15,2) DEFAULT 0,
-            date date,
             leaderboard_id int(11) DEFAULT NULL,
+            last_updated timestamp,
+            time time,
             PRIMARY KEY (id)
         ) $charset_collate;";
 
-        $sql[] = "CREATE TABLE swlp_segments (
+        $sql[] = "CREATE TABLE slwp_segments (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             activity_id int(11) DEFAULT NULL,
             athlete_id int(11) DEFAULT NULL,
             date date,
             distance decimal(15,2) DEFAULT 0,
             leaderboard_id int(11) DEFAULT NULL,
+            last_updated timestamp,
             segment_id int(11) DEFAULT NULL,
             segment_type varchar(15) DEFAULT NULL,
             time time,
             PRIMARY KEY (id)
         ) $charset_collate;";
 
-
-        $sql[] = "CREATE TABLE swlp_athletes (
+        $sql[] = "CREATE TABLE slwp_athletes (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             age varchar(12) DEFAULT NULL,
             athlete_id int(11) DEFAULT NULL,
             first_name varchar(60) DEFAULT NULL,
             gender varchar(1) DEFAULT NULL,
             last_name varchar(64) DEFAULT NULL,
-            time time,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        $sql[] = "CREATE TABLE slwp_leaderbpard_athletes (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            athlete_id int(11) DEFAULT NULL,
+            leaderboard_id int(11) DEFAULT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
 

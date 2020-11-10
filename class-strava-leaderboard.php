@@ -72,7 +72,7 @@ final class SLWP {
         $this->define( 'SLWP_PATH', plugin_dir_path( __FILE__ ) );
         $this->define( 'SLWP_URL', plugin_dir_url( __FILE__ ) );
         $this->define( 'SLWP_ASSETS_URL', plugin_dir_url( __FILE__ ) . 'assets/' );
-        $this->define( 'SLWP_DB_VERSION', '0.1.0' );
+        $this->define( 'SLWP_DB_VERSION', '0.1.0' ); // may move to db class.
     }
 
     /**
@@ -98,23 +98,29 @@ final class SLWP {
     public function includes() {
         include_once( SLWP_PATH . 'includes/class-slwp-api-format.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-logging.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-users.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-users-token-resfresh.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-oauth.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-db.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-db-activities.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-db-athletes.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-db-segments.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-post-types.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-api-wrapper.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-template-loader.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-url-rewrites.php' );
-        include_once( SLWP_PATH . 'includes/cli/class-slwp-cli-dbsync.php' );        
+        include_once( SLWP_PATH . 'includes/cli/class-slwp-cli.php' );
         include_once( SLWP_PATH . 'includes/functions.php' );
 
         $this->format = new SLWP_Api_Format();
-        $this->users = new SLWP_Users();
 
         // load if in admin.
         if ( is_admin() ) {
             include_once( SLWP_PATH . 'includes/admin/class-slwp-admin.php' );
         }
+
+        // $utr = new SLWP_Users_Token_Refresh();
+        // $utr->check_users_token();
     }
 
     /**
