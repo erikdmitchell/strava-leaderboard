@@ -34,32 +34,16 @@ class SLWP_DB_Activities extends SLWP_DB {
             'type' => '%s',
             'start_date' => '%s',
             'trainer' => '%s',
-            'commute' => '%s',                                                                        
+            'commute' => '%s',
             'manual' => '%s',
             'private' => '%s',
             'flagged' => '%s',
             'workout_type' => '%d',
-            'upload_id_str' => '%s',                                    
+            'upload_id_str' => '%s',
             'average_speed' => '%d',
-            'last_updated' => '%s',            
+            'last_updated' => '%s',
         );
     }
-
-
-
-            moving_time int(11) DEFAULT NULL,
-            total_elevation_gain decimal(15,2) DEFAULT 0,
-            type varchar(20) DEFAULT NULL,
-            start_date date,
-            trainer boolean,
-            commute boolean,
-            manual boolean,
-            private boolean,
-            flagged boolean,
-            workout_type int(11) DEFAULT 0,
-            upload_id_str varchar(20) DEFAULT NULL,
-            average_speed decimal(15,2) DEFAULT 0,
-            last_updated timestamp,
 
     /**
      * Get default column values
@@ -80,14 +64,14 @@ class SLWP_DB_Activities extends SLWP_DB {
             'type' => '',
             'start_date' => '',
             'trainer' => '',
-            'commute' => '',                                                                        
+            'commute' => '',
             'manual' => '',
             'private' => '',
             'flagged' => '',
             'workout_type' => '0',
-            'upload_id_str' => '',                                    
+            'upload_id_str' => '',
             'average_speed' => '0.00',
-            'last_updated' => '', 
+            'last_updated' => '',
         );
     }
 
