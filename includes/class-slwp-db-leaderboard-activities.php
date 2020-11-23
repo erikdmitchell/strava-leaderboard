@@ -111,7 +111,7 @@ class SLWP_DB_Leaderboard_Activities extends SLWP_DB {
 
         $args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? $this->primary_key : $args['orderby'];
 
-        $cache_key = ( true === $count ) ? md5( 'slwp_activities_count' . serialize( $args ) ) : md5( 'slwp_activities_' . serialize( $args ) );
+        $cache_key = ( true === $count ) ? md5( 'slwp_leader_board_activities_count' . serialize( $args ) ) : md5( 'slwp_leaderboard_activities_' . serialize( $args ) );
 
         $results = wp_cache_get( $cache_key, 'activities' );
 

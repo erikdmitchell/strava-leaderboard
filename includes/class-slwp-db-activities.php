@@ -23,14 +23,43 @@ class SLWP_DB_Activities extends SLWP_DB {
     public function get_columns() {
         return array(
             'id' => '%d',
-            'activity_count' => '%d',
+            'activity_id' => '%d',
+            'external_id' => '%s',
+            'upload_id' => '%d',
             'athlete_id' => '%d',
-            'distance' => '%s',
-            'leaderboard_id' => '%d',
-            'last_updated' => '%s',
-            'time' => '%s',
+            'name' => '%s',
+            'distance' => '%d',
+            'moving_time' => '%d',
+            'total_elevation_gain' => '%d',
+            'type' => '%s',
+            'start_date' => '%s',
+            'trainer' => '%s',
+            'commute' => '%s',                                                                        
+            'manual' => '%s',
+            'private' => '%s',
+            'flagged' => '%s',
+            'workout_type' => '%d',
+            'upload_id_str' => '%s',                                    
+            'average_speed' => '%d',
+            'last_updated' => '%s',            
         );
     }
+
+
+
+            moving_time int(11) DEFAULT NULL,
+            total_elevation_gain decimal(15,2) DEFAULT 0,
+            type varchar(20) DEFAULT NULL,
+            start_date date,
+            trainer boolean,
+            commute boolean,
+            manual boolean,
+            private boolean,
+            flagged boolean,
+            workout_type int(11) DEFAULT 0,
+            upload_id_str varchar(20) DEFAULT NULL,
+            average_speed decimal(15,2) DEFAULT 0,
+            last_updated timestamp,
 
     /**
      * Get default column values
@@ -40,12 +69,25 @@ class SLWP_DB_Activities extends SLWP_DB {
      */
     public function get_column_defaults() {
         return array(
-            'activity_count' => 0,
+            'activity_id' => '',
+            'external_id' => '',
+            'upload_id' => '',
             'athlete_id' => '',
+            'name' => '',
             'distance' => '0.00',
-            'leaderboard_id' => '',
-            'last_updated' => '',
-            'time' => '',
+            'moving_time' => '',
+            'total_elevation_gain' => '0.00',
+            'type' => '',
+            'start_date' => '',
+            'trainer' => '',
+            'commute' => '',                                                                        
+            'manual' => '',
+            'private' => '',
+            'flagged' => '',
+            'workout_type' => '0',
+            'upload_id_str' => '',                                    
+            'average_speed' => '0.00',
+            'last_updated' => '', 
         );
     }
 
@@ -64,11 +106,7 @@ class SLWP_DB_Activities extends SLWP_DB {
             'number' => 20,
             'offset' => 0,
             'athlete_id' => 0,
-            'leaderboard_id' => 0,
-            'distance' => '', // not supported.
-            'last_updated' => '', // not supported.
-            'time' => '', // not supported.
-            'orderby' => 'distance',
+            'orderby' => 'start_date',
             'order' => 'DESC',
         );
 
@@ -91,22 +129,6 @@ class SLWP_DB_Activities extends SLWP_DB {
 
             $where .= "WHERE `athlete_id` IN( {$athlete_ids} ) ";
 
-        }
-
-        // leaderboard id(s).
-        if ( ! empty( $args['leaderboard_id'] ) ) {
-
-            if ( empty( $where ) ) {
-                $where .= ' WHERE';
-            } else {
-                $where .= ' AND';
-            }
-
-            if ( is_array( $args['leaderboard_id'] ) ) {
-                $where .= " `leaderboard_id`  IN('" . implode( ',', $args['leaderboard_id'] ) . "') ";
-            } else {
-                $where .= " `leaderboard_id` = '" . intval( $args['leaderboard_id'] ) . "' ";
-            }
         }
 
         $args['orderby'] = ! array_key_exists( $args['orderby'], $this->get_columns() ) ? $this->primary_key : $args['orderby'];
