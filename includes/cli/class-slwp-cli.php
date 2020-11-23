@@ -1,6 +1,116 @@
 <?php
 
+function slwp_get_activity_segment_ids( $segment_efforts = '' ) {
+    $ids = array();
+
+    foreach ( $segment_efforts as $effort ) {
+        $ids[] = $effort->getSegment()->getId();
+    }
+
+    return $ids;
+}
+
+function slwp_is_activity_in_leaderboard() {
+    // date, activity_type
+}
+
+function slwp_is_segment_in_leaderboard() {
+    // date, id
+}
+
+function slwp_is_in_leaderboard( $args = array() ) {
+    $defaults = array(
+        'type' => '',
+        'date' => '',
+        'segment_id' => 0,
+        'activity_type' => '',
+    );
+
+    $parsed_args = wp_parse_args( $args, $defaults );
+
+    print_r( $args );
+}
+
 class SLWP_CLI {
+
+    public function workflow( $args, $assoc_args ) {
+        global $wpdb;
+
+        $api_wrapper = new SLWP_Api_Wrapper();
+        $leaderboards = slwp_get_leaderboards(); // use only active.
+
+        WP_CLI::log( 'Begin Workflow' );
+        WP_CLI::warning( 'This is where we would get notification via webhook.' );
+
+        if ( ! isset( $args[0] ) ) {
+            WP_CLI::error( 'You need to pass an athlete id.' );
+        }
+
+        $athlete_id = $args[0];
+
+        WP_CLI::log( 'Athlete: ' . $athlete_id );
+
+        // get athlete token
+        $access_token = $wpdb->get_var( "SELECT access_token from slwp_tokens_sl WHERE athlete_id = $athlete_id" );
+
+        // slwp_get_athletes()
+
+        // can add as vars - default is yesterday.
+        $start_date = date( 'Y/m/d', strtotime( '-1 days' ) );
+        $end_date = date( 'Y/m/d' );
+
+        WP_CLI::log( 'Activity date range: ' . $start_date . ' - ' . $end_date );
+
+        $activities = $api_wrapper->get_athlete_activities( $access_token, strtotime( $end_date ), strtotime( $start_date ) );
+
+        if ( is_wp_error( $activities ) ) {
+            WP_CLI::error( $activities->get_error_message() );
+        }
+
+        foreach ( $activities as $activity ) {
+            // $activity brings in a bunch of data, but if we get it by the id, we get more data including segments.
+            $activity_id = $activity->getId();
+            $detailed_activity = $api_wrapper->get_activity( $access_token, $activity_id );
+            $activity_start_date = slwp()->format->format_date( $activity->getStartDate() );
+            $activity_type = $activity->getType();
+            $segment_ids = slwp_get_activity_segment_ids( $detailed_activity->getSegmentEfforts() );
+
+            WP_CLI::log( "Start date: $activity_start_date" );
+            WP_CLI::log( "Type: $activity_type" );
+            WP_CLI::log( print_r( $segment_ids ) );
+
+            // is this a vaild activity
+            // leaderboards?
+
+            // check activity, add, update or continue.
+            // print_r($detailed_activity->getSegmentEfforts());
+
+            /*
+            $data = array(
+                'activity_id' => $activity->getId(),
+                'external_id' => $activity->getExternalId(),
+                'upload_id' => $activity->getUploadId(),
+                'athlete_id' => $activity->getAthlete()->getId(),
+                'name' => $activity->getName(),
+                'distance' => $activity->getDistance(),
+                'moving_time' => $activity->getMovingTime(),
+                'total_elevation_gain' => $activity->getTotalElevationGain(),
+                'type' => $activity->getType(),
+                'start_date' => $activity->getStartDate(),
+                'trainer' => $activity->getTrainer(),
+                'commute' => $activity->getCommute(),
+                'manual' => $activity->getManual(),
+                'private' => $activity->getPrivate(), // we need to remove it i think
+                'flagged' => $activity->getFlagged(),
+                'workout_type' => $activity->getWorkoutType(),
+                'upload_id_str' => $activity->getUploadIdStr(),
+                'average_speed' => $activity->getAverageSpeed(),
+                'last_updated' => date( 'Y-m-d H:i:s' ),
+            );
+            */
+        }
+
+    }
 
     // TEMP
     public function add_leaderboard_activity( $args, $assoc_args ) {
