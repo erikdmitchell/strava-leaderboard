@@ -103,12 +103,12 @@ function slwp_get_athletes( $args = '' ) {
     return $athletes;
 }
 
-function slwp_add_activities( $athlete = '', $leaderboard_id = 0, $activities = '', $type = 'Time' ) {
+function slwp_add_leaderboard_activities( $athlete = '', $leaderboard_id = 0, $activities = '', $type = 'Time' ) {
     if ( empty( $athlete ) || empty( $activities ) || ! $leaderboard_id ) {
         return false;
     }
 
-    $activities_db = new SLWP_DB_Activities();
+    $activities_db = new SLWP_DB_Leaderboard_Activities();
     // replace below with count - run get activities func
     $db_activities = $activities_db->get_activities(
         array(
@@ -139,8 +139,8 @@ function slwp_add_activities( $athlete = '', $leaderboard_id = 0, $activities = 
     return;
 }
 
-function slwp_get_activities( $args = array() ) {
-    $db = new SLWP_DB_Activities();
+function slwp_get_leaderboard_activities( $args = array() ) {
+    $db = new SLWP_DB_Leaderboard_Activities();
     $activities = $db->get_activities( $args );
 
     return $activities;
@@ -312,7 +312,7 @@ function check_acf( $post_id = 0 ) {
             $args['content_type'] = 'segment';
             break;
         case 'Time':
-            $args['activities'] = slwp_get_activities(
+            $args['activities'] = slwp_get_leaderboard_activities(
                 array(
                     'leaderboard_id' => $post_id,
                     'orderby' => 'time',
@@ -342,6 +342,8 @@ function acf_is_field_group_exists( $value, $type = 'post_title' ) {
 function slwp_check_user_tokens() {
     // slwp()->users->check_users_token();
     // DOES NOT WORK
+    $utr = new SLWP_Users_Token_Refresh();
+    $utr->check_users_token();    
 }
 
 // Hook our function , slwp_check_user_tokens(), into the action slwp_user_token_check
@@ -359,3 +361,9 @@ function slwp_add_weekly_schedule( $schedules ) {
 }
 */
 
+// admin func?
+function slwp_setup_webhooks() {
+    slwp()->webhooks->create_subscription();
+}
+
+//slwp_setup_webhooks();

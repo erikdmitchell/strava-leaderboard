@@ -44,8 +44,10 @@ final class SLWP {
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
-        }
 
+            self::$_instance->webhooks = new SLWP_Webhooks(); // apply to admin only?!
+        }
+        
         return self::$_instance;
     }
 
@@ -101,7 +103,8 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/class-slwp-users-token-resfresh.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-oauth.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-db-activities.php' );
+        //include_once( SLWP_PATH . 'includes/class-slwp-db-activities.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-db-leaderboard-activities.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db-athletes.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db-segments.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-post-types.php' );
@@ -109,6 +112,7 @@ final class SLWP {
         include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-template-loader.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-url-rewrites.php' );
+        include_once( SLWP_PATH . 'includes/class-slwp-webhooks.php' );
         include_once( SLWP_PATH . 'includes/cli/class-slwp-cli.php' );
         include_once( SLWP_PATH . 'includes/functions.php' );
 

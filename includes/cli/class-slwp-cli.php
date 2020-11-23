@@ -3,11 +3,11 @@
 class SLWP_CLI {
 
     // TEMP
-    public function add_activity( $args, $assoc_args ) {
+    public function add_leaderboard_activity( $args, $assoc_args ) {
         $api_wrapper = new SLWP_Api_Wrapper();
         $athletes = slwp_get_athletes();
 
-        WP_CLI::log( 'add_activity()' );
+        WP_CLI::log( 'add_leaderboard_activity()' );
 
         if ( ! isset( $args[0] ) ) {
             WP_CLI::error( 'You need to pass a leaderboard id.' );
@@ -40,7 +40,7 @@ class SLWP_CLI {
                     $activities = $api_wrapper->get_athlete_activities( $athlete->access_token, strtotime( $end_date ), strtotime( $start_date ) );
                     $activities_clean = slwp_clean_time_distance_data( $activities );
 
-                    slwp_add_activities( $athlete, $leaderboard_id, $activities_clean );
+                    slwp_add_leaderboard_activities( $athlete, $leaderboard_id, $activities_clean );
                 }
                 break;
             case 'segment':
