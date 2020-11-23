@@ -35,7 +35,7 @@ class SLWP_Install {
 
         self::create_tables();
         self::update_version();
-        //self::maybe_update_db_version();
+        // self::maybe_update_db_version();
         self::setup_cron_jobs();
 
         delete_transient( 'slwp_installing' );
@@ -46,16 +46,7 @@ class SLWP_Install {
 
         $sql = array();
 
-/*
-        $slwp_db_version = get_option( 'slwp_db_version', 0 );
-
-        if ( version_compare( $slwp_db_version, 0, '>' ) ) {
-            return;
-        }
-*/
-
         if ( version_compare( SLWP_DB_VERSION, get_option( 'slwp_db_version', 0 ), '<=' ) ) {
-echo SLWP_DB_VERSION . ' | ' . get_option( 'slwp_db_version', 0 );          
             return;
         }
 
@@ -119,7 +110,7 @@ echo SLWP_DB_VERSION . ' | ' . get_option( 'slwp_db_version', 0 );
             leaderboard_id int(11) DEFAULT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
-        
+
         $sql[] = "CREATE TABLE slwp_activities (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             activity_id int(11) DEFAULT NULL,
@@ -142,7 +133,7 @@ echo SLWP_DB_VERSION . ' | ' . get_option( 'slwp_db_version', 0 );
             average_speed decimal(15,2) DEFAULT 0,
             last_updated timestamp,
             PRIMARY KEY (id)
-        ) $charset_collate;";        
+        ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
