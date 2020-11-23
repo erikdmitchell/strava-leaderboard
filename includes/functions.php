@@ -52,14 +52,21 @@ function slwp_get_template_part( $slug, $name = '', $args = null ) {
     }
 }
 
-function slwp_get_leaderboards( $args = array() ) {
-    return get_posts(
+function slwp_get_leaderboards( $args = array(), $active = true ) {
+    $leaderboards = get_posts(
         array(
             'posts_per_page' => -1,
             'post_type' => 'leaderboard',
-        // add meta check for active.
+            // add meta check for active.
         )
     );
+
+    // add acf (meta) data.
+    foreach ( $leaderboards as $leaderboard ) {
+        $leaderboard->fields = get_fields( $leaderboard->ID );
+    }
+
+    return $leaderboards;
 }
 
 function slwp_add_athlete( $access_token = '' ) {
@@ -343,7 +350,7 @@ function slwp_check_user_tokens() {
     // slwp()->users->check_users_token();
     // DOES NOT WORK
     $utr = new SLWP_Users_Token_Refresh();
-    $utr->check_users_token();    
+    $utr->check_users_token();
 }
 
 // Hook our function , slwp_check_user_tokens(), into the action slwp_user_token_check
@@ -366,4 +373,4 @@ function slwp_setup_webhooks() {
     slwp()->webhooks->create_subscription();
 }
 
-//slwp_setup_webhooks();
+// slwp_setup_webhooks();
