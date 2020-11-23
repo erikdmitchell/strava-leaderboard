@@ -54,15 +54,15 @@ class SLWP_Url_Rewrites {
 
             wp_redirect( home_url() . '?message=' . urlencode_deep( $message ) );
             die;
-        } 
-        
+        }
+
         // Strava Webhooks
         if ( $webhook ) {
-echo '<pre>';            
-print_r(slwp()->webhooks->validation());            
-echo '</pre>';  
+            echo '<pre>';
+            print_r( slwp()->webhooks->validation() );
+            echo '</pre>';
 
-// https://mycallbackurl.com?hub.verify_token=STRAVA&hub.challenge=15f7d1a91c1f40f8a748fd134752feb3&hub.mode=subscribe          
+            // https://mycallbackurl.com?hub.verify_token=STRAVA&hub.challenge=15f7d1a91c1f40f8a748fd134752feb3&hub.mode=subscribe
             die;
         }
     }
