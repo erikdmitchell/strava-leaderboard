@@ -35,7 +35,7 @@ class SLWP_Install {
 
         self::create_tables();
         self::update_version();
-        self::maybe_update_db_version();
+        //self::maybe_update_db_version();
         self::setup_cron_jobs();
 
         delete_transient( 'slwp_installing' );
@@ -46,9 +46,16 @@ class SLWP_Install {
 
         $sql = array();
 
+/*
         $slwp_db_version = get_option( 'slwp_db_version', 0 );
 
         if ( version_compare( $slwp_db_version, 0, '>' ) ) {
+            return;
+        }
+*/
+
+        if ( version_compare( SLWP_DB_VERSION, get_option( 'slwp_db_version', 0 ), '<=' ) ) {
+echo SLWP_DB_VERSION . ' | ' . get_option( 'slwp_db_version', 0 );          
             return;
         }
 
@@ -71,7 +78,7 @@ class SLWP_Install {
             PRIMARY KEY (id)
     	) $charset_collate;";
 
-        $sql[] = "CREATE TABLE slwp_activities (
+        $sql[] = "CREATE TABLE slwp_leaderboard_activities (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             activity_count int(11) DEFAULT 0,
             athlete_id int(11) DEFAULT NULL,
@@ -82,7 +89,7 @@ class SLWP_Install {
             PRIMARY KEY (id)
         ) $charset_collate;";
 
-        $sql[] = "CREATE TABLE slwp_segments (
+        $sql[] = "CREATE TABLE slwp_leaderboard_segments (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             activity_id int(11) DEFAULT NULL,
             athlete_id int(11) DEFAULT NULL,
@@ -112,6 +119,30 @@ class SLWP_Install {
             leaderboard_id int(11) DEFAULT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
+        
+        $sql[] = "CREATE TABLE slwp_activities (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            activity_id int(11) DEFAULT NULL,
+            external_id varchar(25) DEFAULT NULL,
+            upload_id int(11) DEFAULT NULL,
+            athlete_id int(11) DEFAULT NULL,
+            name varchar(255) DEFAULT NULL,
+            distance decimal(15,2) DEFAULT 0,
+            moving_time int(11) DEFAULT NULL,
+            total_elevation_gain decimal(15,2) DEFAULT 0,
+            type varchar(20) DEFAULT NULL,
+            start_date date,
+            trainer boolean,
+            commute boolean,
+            manual boolean,
+            private boolean,
+            flagged boolean,
+            workout_type int(11) DEFAULT 0,
+            upload_id_str varchar(20) DEFAULT NULL,
+            average_speed decimal(15,2) DEFAULT 0,
+            last_updated timestamp,
+            PRIMARY KEY (id)
+        ) $charset_collate;";        
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
