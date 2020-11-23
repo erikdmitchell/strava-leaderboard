@@ -65,25 +65,35 @@ class SLWP_Api_Wrapper {
         }
     }
 
-    public function get_athlete_activities( $athlete_secret = '', $before = '', $after = '' ) {
+    public function get_athlete_activities( $athlete_secret = '', $before = '', $after = '', $per_page = 30, $page = 1 ) {
+        $error = new WP_Error();
         $config = Swagger\Client\Configuration::getDefaultConfiguration()->setAccessToken( $athlete_secret );
 
         $apiInstance = new Api\ActivitiesApi( new Client(), $config );
 
-        // $page = 56; // int | Page number. Defaults to 1.
-        // $per_page = 30; // int | Number of items per page. Defaults to 30.
-
         try {
-            $result = $apiInstance->getLoggedInAthleteActivities( $before, $after );
+            $result = $apiInstance->getLoggedInAthleteActivities( $before, $after, $page, $per_page );
 
             return $result;
         } catch ( Exception $e ) {
-            return 'Exception when calling ActivitiesApi->getLoggedInAthleteActivities: ' . $e->getMessage();
+            $parsed_error = $this->parse_error( $e->getMessage() );
+            $error->add( 'exception', $parsed_error['message'], $parsed_error['data'] );
+
+            return $error;
         }
     }
 
     public function get_activity_url_by_id( $id_obj = '' ) {
         return '<a href="https://www.strava.com/activities/' . $id_obj['id'] . '" target="_blank">View Activity</a>';
+    }
+
+    protected function parse_error( $error = '' ) {
+        $exploded_error = explode( 'response:', $error );
+
+        $arr['message'] = $exploded_error[0] . 'response'; // "response" is removed as part of split.
+        $arr['data'] = json_decode( $exploded_error[1] );
+
+        return $arr;
     }
 
 }
