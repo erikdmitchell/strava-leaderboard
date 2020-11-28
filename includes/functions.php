@@ -347,8 +347,6 @@ function acf_is_field_group_exists( $value, $type = 'post_title' ) {
 }
 
 function slwp_check_user_tokens() {
-    // slwp()->users->check_users_token();
-    // DOES NOT WORK
     $utr = new SLWP_Users_Token_Refresh();
     $utr->check_users_token();
 }
