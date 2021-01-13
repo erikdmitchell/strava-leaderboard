@@ -347,7 +347,7 @@ function slwp_check_user_tokens() {
 }
 
 // Hook our function , slwp_check_user_tokens(), into the action slwp_user_token_check
-add_action( 'slwp_user_token_check', 'slwp_check_user_tokens' );
+//add_action( 'slwp_user_token_check', 'slwp_check_user_tokens' );
 
 /*
 add_filter( 'cron_schedules', 'slwp_add_weekly_schedule' );
@@ -362,8 +362,32 @@ function slwp_add_weekly_schedule( $schedules ) {
 */
 
 // admin func?
+/*
 function slwp_setup_webhooks() {
     slwp()->webhooks->create_subscription();
 }
 
-//slwp_setup_webhooks();
+slwp_setup_webhooks();
+*/
+
+
+
+
+function slwp_log($log) {
+    $filename = SLWP_PATH . 'log.txt';
+    $file = fopen( $filename, 'a' );
+    
+    $current_time = date( 'Y-m-d H:i:s A' , strtotime( current_time( 'timestamp' ) ) );
+    
+    if (is_array($log) || is_object($log)) {
+        $data = print_r($log, true);
+    } else {
+        $data = $log;
+    }
+    
+    $data = "\n$current_time\n$data";
+
+    fwrite( $file, $data );
+    
+    fclose( $file );
+}

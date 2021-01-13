@@ -99,7 +99,7 @@ final class SLWP {
      */
     public function includes() {
         include_once( SLWP_PATH . 'includes/class-slwp-api-format.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-logging.php' );
+        //include_once( SLWP_PATH . 'includes/class-slwp-logging.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-users-token-resfresh.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-oauth.php' );
         include_once( SLWP_PATH . 'includes/class-slwp-db.php' );
