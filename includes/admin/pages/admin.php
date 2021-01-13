@@ -1,5 +1,5 @@
 <div class="wrap slwp-admin-wrap">
-    <h1>Strava Leaderbaord</h1>
+    <h1>Strava Leaderboard</h1>
 
     <h3>Settings</h3>
 

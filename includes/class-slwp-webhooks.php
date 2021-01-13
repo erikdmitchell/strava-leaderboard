@@ -81,7 +81,8 @@ function slwp_setup_webhooks() {
 }
 
 slwp_setup_webhooks();
-*/    
+*/   
+    } 
    
 
 private function return_json() {
