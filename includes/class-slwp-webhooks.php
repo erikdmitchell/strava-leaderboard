@@ -49,6 +49,7 @@ slwp_log('Request subscription status: ' . $status);
 //slwp_log('Request subscription $_GET:');
 //slwp_log($_GET);
         //return $response;
+        //$this->json_validate();
     }
     
     public function validation() {
@@ -70,12 +71,12 @@ slwp_log($current_time);
     
     public function json_validate() {
 //echo "abc";        
-slwp_log('json_validate()');
+//slwp_log('json_validate()');
 
 $current_time = date( 'Y-m-d H:i:s A' , time() );
 
 slwp_log($current_time); 
-slwp_log($_GET);  
+//slwp_log($_GET);  
 $this->return_json();     
     }
    
