@@ -30,11 +30,17 @@ class SLWP_Url_Rewrites {
             array( 'slwp/stravaWebhooks/?$' => 'index.php?webhook=1' ),
             $wp_rewrite->rules
         );
+
+        $wp_rewrite->rules = array_merge(
+            array( 'slwp/stravaWebhooksJ/?$' => 'index.php?webhookj=1' ),
+            $wp_rewrite->rules
+        );
     }
 
     public function query_vars( $query_vars ) {
         $query_vars[] = 'custom';
         $query_vars[] = 'webhook'; // webhooks.
+        $query_vars[] = 'webhookj';
 
         return $query_vars;
     }
@@ -42,7 +48,8 @@ class SLWP_Url_Rewrites {
     public function template_redirect() {
         $custom = intval( get_query_var( 'custom' ) );
         $webhook = intval( get_query_var( 'webhook' ) );
-
+        $webhookj = intval( get_query_var( 'webhookj' ) );
+        
         // Strava OAuth.
         if ( $custom ) {
             $oauth = new SLWP_Oauth();
@@ -61,6 +68,11 @@ class SLWP_Url_Rewrites {
             slwp()->webhooks->validation();                     
             die;
         }
+
+        if ( $webhookj ) {
+            slwp()->webhooks->json_validate();                     
+            die;
+        }
     }
 
     /**
@@ -69,7 +81,7 @@ class SLWP_Url_Rewrites {
     function flush_rules() {
         $rules = get_option( 'rewrite_rules' );
 
-        if ( ! isset( $rules['slwp/stravaAuth/?$'] ) || ! isset( $rules['slwp/stravaWebhooks/?$'] ) ) {
+        if ( ! isset( $rules['slwp/stravaAuth/?$'] ) || ! isset( $rules['slwp/stravaWebhooks/?$'] ) || ! isset( $rules['slwp/stravaWebhooksJ/?$'] ) ) {
             global $wp_rewrite;
             $wp_rewrite->flush_rules();
         }

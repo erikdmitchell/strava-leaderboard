@@ -11,7 +11,7 @@ slwp_log('POST Webhooks');
         $url = 'https://www.strava.com/api/v3/push_subscriptions';
         $client_id = get_slwp_client_id();
         $client_secret = get_slwp_client_secret();
-        $callback_url = esc_url( home_url( '/slwp/stravaWebhooks' ) );
+        $callback_url = esc_url( home_url( '/slwp/stravaWebhooksJ' ) );
         $verify_token = 'slwplb';
         
         //$callback_url = urlencode( $callback_url );
@@ -43,8 +43,8 @@ slwp_log('Request subscription status: ' . $status);
     
     	$response = json_decode($json_response, true);
     	
-slwp_log('Request subscription response:');
-slwp_log($json_response);
+//slwp_log('Request subscription response:');
+//slwp_log($json_response);
 //slwp_log($response);
 //slwp_log('Request subscription $_GET:');
 //slwp_log($_GET);
@@ -59,14 +59,25 @@ $current_time = date( 'Y-m-d H:i:s A' , time() );
 slwp_log($current_time);
        
         // check var.
-        if (isset($_GET['hub_challenge'])) {
-            $this->return_json();     
-        } else {
+        //if (isset($_GET['hub_challenge'])) {
+           // $this->return_json();     
+        //} else {
             $this->request_subscription();
             //$foo = $this->request_subscription();
             //slwp_log($foo);
-        }  
+        //}  
     } 
+    
+    public function json_validate() {
+//echo "abc";        
+slwp_log('json_validate()');
+
+$current_time = date( 'Y-m-d H:i:s A' , time() );
+
+slwp_log($current_time); 
+slwp_log($_GET);  
+$this->return_json();     
+    }
    
 
 private function return_json() {
