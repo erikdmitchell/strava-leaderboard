@@ -14,7 +14,7 @@ slwp_log('POST Webhooks');
         $callback_url = esc_url( home_url( '/slwp/stravaWebhooks' ) );
         $verify_token = 'slwplb';
         
-        $callback_url = urlencode( $callback_url );
+        //$callback_url = urlencode( $callback_url );
         
         $params = "client_id=$client_id&client_secret=$client_secret&callback_url=$callback_url&verify_token=$verify_token";
 
@@ -26,7 +26,9 @@ slwp_log($url);
         
     	curl_setopt($curl, CURLOPT_HEADER, false);
     	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    
+        //curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        
     	$json_response = curl_exec($curl);
     
     	$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -42,9 +44,11 @@ slwp_log('Request subscription status: ' . $status);
     	$response = json_decode($json_response, true);
     	
 slwp_log('Request subscription response:');
-slwp_log($response);
-slwp_log('Request subscription $_GET:');
-slwp_log($_GET);
+slwp_log($json_response);
+//slwp_log($response);
+//slwp_log('Request subscription $_GET:');
+//slwp_log($_GET);
+        //return $response;
     }
     
     public function validation() {
@@ -59,6 +63,8 @@ slwp_log($current_time);
             $this->return_json();     
         } else {
             $this->request_subscription();
+            //$foo = $this->request_subscription();
+            //slwp_log($foo);
         }  
     } 
    
