@@ -26,22 +26,24 @@ class SLWP_Url_Rewrites {
         );
 
         // Strava Webhooks callback URL.
+/*
         $wp_rewrite->rules = array_merge(
             array( 'slwp/stravaWebhooks/?$' => 'index.php?webhook=1' ),
             $wp_rewrite->rules
         );
+*/
     }
 
     public function query_vars( $query_vars ) {
         $query_vars[] = 'custom';
-        $query_vars[] = 'webhook'; // webhooks.
+        //$query_vars[] = 'webhook'; // webhooks.
 
         return $query_vars;
     }
 
     public function template_redirect() {
         $custom = intval( get_query_var( 'custom' ) );
-        $webhook = intval( get_query_var( 'webhook' ) );
+        //$webhook = intval( get_query_var( 'webhook' ) );
 
         // Strava OAuth.
         if ( $custom ) {
@@ -56,6 +58,7 @@ class SLWP_Url_Rewrites {
             die;
         } 
         
+/*
         // Strava Webhooks
         if ( $webhook ) {
 //echo '<pre>';            
@@ -65,6 +68,7 @@ slwp()->webhooks->validation();
 
 // https://mycallbackurl.com?hub.verify_token=STRAVA&hub.challenge=15f7d1a91c1f40f8a748fd134752feb3&hub.mode=subscribe          
             die;
+*/
         }
     }
 
