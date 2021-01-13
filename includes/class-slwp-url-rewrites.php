@@ -58,12 +58,7 @@ class SLWP_Url_Rewrites {
         
         // Strava Webhooks
         if ( $webhook ) {
-//echo '<pre>';            
-//print_r(slwp()->webhooks->validation());
-slwp()->webhooks->validation();            
-//echo '</pre>';  
-
-// https://mycallbackurl.com?hub.verify_token=STRAVA&hub.challenge=15f7d1a91c1f40f8a748fd134752feb3&hub.mode=subscribe          
+            slwp()->webhooks->validation();                     
             die;
         }
     }

@@ -377,7 +377,7 @@ function slwp_log($log) {
     $filename = SLWP_PATH . 'log.txt';
     $file = fopen( $filename, 'a' );
     
-    $current_time = date( 'Y-m-d H:i:s A' , strtotime( current_time( 'timestamp' ) ) );
+    //$current_time = date( 'Y-m-d H:i:s A' , strtotime( current_time( 'timestamp' ) ) );
     
     if (is_array($log) || is_object($log)) {
         $data = print_r($log, true);
@@ -385,7 +385,7 @@ function slwp_log($log) {
         $data = $log;
     }
     
-    $data = "\n$current_time\n$data";
+    $data = "\n$data\n";
 
     fwrite( $file, $data );
     
