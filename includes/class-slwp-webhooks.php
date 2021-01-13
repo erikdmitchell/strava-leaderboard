@@ -11,6 +11,7 @@ class SLWP_Webhooks {
     }
 
     private function request_subscription() {
+slwp_log('POST Webhooks');         
         $url = 'https://www.strava.com/api/v3/push_subscriptions';
         $client_id = get_slwp_client_id();
         $client_secret = get_slwp_client_secret();
@@ -52,8 +53,41 @@ slwp_log($response);
     }
     
     public function validation() {
-//slwp_log('Validate Webhooks');
-//slwp_log($_GET);        
+        // check var.
+        if (isset($_GET['hub_challenge'])) {
+            $this->return_json();     
+        } else {
+            $this->request_subscription();
+        }
+
+/*
+    
+Next, you need to create a Webhook Subscription by doing a POST request to the Strava Sync webhook controller (http://website.com/strava-sync/webhook/sync) with a Bearer Token 
+and client_id, client_secret, verify_token, callback_url parameters (The callback_url should be the same as the POST request URL)
+
+<br>
+check var<br>
+send post<br>
+<p>
+    if get<br>
+    return json<br>
+    else <br>
+    
+    fire webhook
+</p>
+
+function slwp_setup_webhooks() {
+    slwp()->webhooks->create_subscription();
+}
+
+slwp_setup_webhooks();
+*/    
+   
+
+private function return_json() {
+    slwp_log('Validate Webhooks');  
+    slwp_log($_GET);        
+    
 //echo "validate webhooks<br>";        
 
 //?hub.verify_token= slwplb&hub.challenge= $_GET['hub.challenge'] &hub.mode=subscribe
@@ -114,24 +148,6 @@ exit();
 
     }
 
-/*
-    public function validate() {
-        $message = array(
-            'action' => 'error',
-            'message' => 'There was an error.',
-        );
 
-        if ( isset( $_GET['error'] ) && 'access_denied' == $_GET['error'] ) {
-            $message['action'] = 'error';
-            $message['message'] = 'Access denied.';
-        }
-
-        if ( isset( $_GET['code'] ) && '' != $_GET['code'] ) {
-            return $this->token_exchange( $_GET['code'] );
-        }
-
-        return $message;
-    }
-*/
 
 }
