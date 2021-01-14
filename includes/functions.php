@@ -361,23 +361,9 @@ function slwp_add_weekly_schedule( $schedules ) {
 }
 */
 
-// admin func?
-/*
-function slwp_setup_webhooks() {
-    slwp()->webhooks->create_subscription();
-}
-
-slwp_setup_webhooks();
-*/
-
-
-
-
 function slwp_log($log) {
     $filename = SLWP_PATH . 'log.txt';
     $file = fopen( $filename, 'a' );
-    
-    //$current_time = date( 'Y-m-d H:i:s A' , strtotime( current_time( 'timestamp' ) ) );
     
     if (is_array($log) || is_object($log)) {
         $data = print_r($log, true);
