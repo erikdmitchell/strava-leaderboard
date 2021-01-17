@@ -11,10 +11,11 @@ slwp_log('POST Webhooks');
         $url = 'https://www.strava.com/api/v3/push_subscriptions';
         $client_id = get_slwp_client_id();
         $client_secret = get_slwp_client_secret();
-        $callback_url = esc_url( home_url( '/slwp/stravaWebhooksJ' ) );
+        $callback_url = esc_url( home_url( '/slwp/stravaWebhooks' ) );
+        //$callback_url = esc_url( home_url( '/slwp/stravaWebhooksJ' ) );
         $verify_token = 'slwplb';
         
-        //$callback_url = urlencode( $callback_url );
+        $callback_url = urlencode( $callback_url );
         
         $params = "client_id=$client_id&client_secret=$client_secret&callback_url=$callback_url&verify_token=$verify_token";
 
@@ -38,14 +39,18 @@ slwp_log('Request subscription status: ' . $status);
     	if ($status!=200) :
 // error
     	endif;
-    
+slwp_log(curl_getinfo($curl));     
     	curl_close($curl);
     
     	$response = json_decode($json_response, true);
-    	
+   	
+//$request_input = file_get_contents('php://input');    	
+//slwp_log('Request "input"');
+//slwp_log($request_input);
 //slwp_log('Request subscription response:');
 //slwp_log($json_response);
 //slwp_log($response);
+//slwp_log($_REQUEST);
 //slwp_log('Request subscription $_GET:');
 //slwp_log($_GET);
         //return $response;
@@ -71,7 +76,7 @@ slwp_log($current_time);
     
     public function json_validate() {
 //echo "abc";        
-//slwp_log('json_validate()');
+slwp_log('json_validate()');
 
 $current_time = date( 'Y-m-d H:i:s A' , time() );
 

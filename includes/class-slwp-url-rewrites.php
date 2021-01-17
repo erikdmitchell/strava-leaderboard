@@ -65,11 +65,13 @@ class SLWP_Url_Rewrites {
         
         // Strava Webhooks
         if ( $webhook ) {
+slwp_log('url rewrite: webhook');            
             slwp()->webhooks->validation();                     
             die;
         }
 
         if ( $webhookj ) {
+slwp_log('url rewrite: webhookj');            
             slwp()->webhooks->json_validate();                     
             die;
         }
