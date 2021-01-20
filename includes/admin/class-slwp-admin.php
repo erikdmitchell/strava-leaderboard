@@ -113,6 +113,15 @@ final class SLWP_Admin {
             SLWP_ASSETS_URL . 'images/strava_symbol_white.png',
             89
         );
+        
+        add_submenu_page(
+            'slwp',
+            __( 'Athletes', 'slwp' ),
+            __( 'Athletes', 'slwp' ),
+            'manage_options', 
+            'slwp-athletes', 
+            array( $this, 'page_athlete' ) 
+        );
     }
 
     /**
@@ -128,8 +137,12 @@ final class SLWP_Admin {
         elseif ( ! empty( $page ) ) :
             $this->get_page( $page );
         else :
-            $this->get_page( 'admin' );
+            $this->get_page( 'main' );
         endif;
+    }
+    
+    public function page_athlete() {
+        $this->page( 'athlete' );
     }
 
     /**
