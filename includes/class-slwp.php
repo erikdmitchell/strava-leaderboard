@@ -68,6 +68,7 @@ final class SLWP {
      * @return void
      */
     private function define_constants() {
+        $this->define( 'SLWP_ABSPATH', dirname( SLWP_PLUGIN_FILE ) . '/' );
         $this->define( 'SLWP_VERSION', $this->version );
         $this->define( 'SLWP_PATH', plugin_dir_path( __FILE__ ) );
         $this->define( 'SLWP_URL', plugin_dir_url( __FILE__ ) );
@@ -96,25 +97,25 @@ final class SLWP {
      * @return void
      */
     public function includes() {
-        include_once( SLWP_PATH . 'includes/class-slwp-api-format.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-logging.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-users-token-resfresh.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-oauth.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-db.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-db-athletes.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-post-types.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-api-wrapper.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-install.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-template-loader.php' );
-        include_once( SLWP_PATH . 'includes/class-slwp-url-rewrites.php' );
-        include_once( SLWP_PATH . 'includes/cli/class-slwp-cli-dbsync.php' );
-        include_once( SLWP_PATH . 'includes/functions.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-api-format.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-logging.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-users-token-resfresh.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-oauth.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-db.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-db-athletes.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-post-types.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-api-wrapper.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-install.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-template-loader.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-url-rewrites.php' );
+        include_once( SLWP_ABSPATH . 'includes/cli/class-slwp-cli-dbsync.php' );
+        include_once( SLWP_ABSPATH . 'includes/slwp-core-functions.php' );
 
         $this->format = new SLWP_Api_Format();
 
         // load if in admin.
         if ( is_admin() ) {
-            include_once( SLWP_PATH . 'includes/admin/class-slwp-admin.php' );
+            include_once( SLWP_ABSPATH . 'includes/admin/class-slwp-admin.php' );
         }
         
         //$utr = new SLWP_Users_Token_Refresh();
@@ -154,7 +155,7 @@ final class SLWP {
         $dirs = array( 'includes/shortcodes' );
 
         foreach ( $dirs as $dir ) :
-            foreach ( glob( SLWP_PATH . $dir . '/*.php' ) as $file ) :
+            foreach ( glob( SLWP_ABSPATH . $dir . '/*.php' ) as $file ) :
                 include_once( $file );
             endforeach;
         endforeach;

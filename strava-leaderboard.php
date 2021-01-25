@@ -11,7 +11,7 @@
  * Text Domain: slwp
  * Domain Path: /languages
  *
- * @package emsa
+ * @package slwp
  */
 
 // If this file is called directly, abort.
@@ -28,5 +28,5 @@ if ( ! defined( 'SLWP_PLUGIN_FILE' ) ) {
 
 // Include the main SLWP class.
 if ( ! class_exists( 'SLWP' ) ) {
-    include_once dirname( __FILE__ ) . '/class-strava-leaderboard.php';
+    include_once dirname( __FILE__ ) . '/includes/class-slwp.php';
 }
