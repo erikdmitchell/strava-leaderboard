@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Include core functions (available in both admin and frontend).
 require SLWP_ABSPATH . 'includes/slwp-acf-functions.php';
 require SLWP_ABSPATH . 'includes/slwp-athlete-functions.php';
+require SLWP_ABSPATH . 'includes/slwp-leaderboard-functions.php';
 require SLWP_ABSPATH . 'includes/slwp-segment-functions.php';
-require SLWP_ABSPATH . 'includes/slwp-time-leaderboard-functions.php';
 
 /**
  * Get client ID.

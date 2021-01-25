@@ -57,5 +57,12 @@ echo "users_data _deprecated<br>";
     return $data;
 }
 
+function slwp_get_leaderboards($args = '') {
+    $defaults = array('post_type' => 'leaderboard' );
+    $args = wp_parse_args( $args, $defaults );
+    $leaderboards = get_posts( $args );
+    
+    return $leaderboards;
+}
 
 
