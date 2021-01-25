@@ -156,7 +156,7 @@ final class SLWP_Admin {
     private function get_page( $path = '', $args = array() ) {
         // allow view file name shortcut.
         if ( substr( $path, -4 ) !== '.php' ) {
-            $path = SLWP_PATH . "includes/admin/pages/{$path}.php";
+            $path = SLWP_ABSPATH . "includes/admin/pages/{$path}.php";
         }
 
         // include.
