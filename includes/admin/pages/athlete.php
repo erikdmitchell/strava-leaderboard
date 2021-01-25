@@ -11,3 +11,14 @@
 </div>
 
 </div>
+
+<pre>
+<?php
+
+$athletes = slwp_get_athletes(); 
+$leaderboards = slwp_get_leaderboards();
+   
+print_r($athletes);
+print_r($leaderboards);
+?>
+</pre>
