@@ -109,7 +109,7 @@ final class SLWP {
         include_once( SLWP_ABSPATH . 'includes/class-slwp-template-loader.php' );
         include_once( SLWP_ABSPATH . 'includes/class-slwp-url-rewrites.php' );
         include_once( SLWP_ABSPATH . 'includes/cli/class-slwp-cli-dbsync.php' );
-        include_once( SLWP_ABSPATH . 'includes/functions.php' );
+        include_once( SLWP_ABSPATH . 'includes/slwp-core-functions.php' );
 
         $this->format = new SLWP_Api_Format();
 
