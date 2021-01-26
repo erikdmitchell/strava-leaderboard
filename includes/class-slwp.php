@@ -72,7 +72,7 @@ final class SLWP {
         $this->define( 'SLWP_VERSION', $this->version );
         $this->define( 'SLWP_PATH', plugin_dir_path( __FILE__ ) );
         $this->define( 'SLWP_URL', plugin_dir_url( __FILE__ ) );
-        $this->define( 'SLWP_ASSETS_URL', plugin_dir_url( __FILE__ ) . 'assets/' );
+        $this->define( 'SLWP_ASSETS_URL', plugin_dir_url( __DIR__ ) . 'assets/' );
         $this->define( 'SLWP_DB_VERSION', '0.1.0' ); // may move to db class.
     }
 
