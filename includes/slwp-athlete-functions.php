@@ -39,3 +39,14 @@ function slwp_get_athletes($args = '') {
     
     return $athletes;
 }
+
+function slwp_athlete_name($id = 0) {
+    if (empty($id) || !$id) {
+        echo '';
+    }
+    
+    $athlete = slwp_get_athletes(array('athlete_id' => $id));
+    $name = $athlete->first_name . ' ' . $athlete->last_name;
+
+    echo $name;
+}
