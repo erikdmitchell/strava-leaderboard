@@ -28,7 +28,13 @@ $leaderboards = slwp_get_leaderboards();
         </tbody>
     </table>
 
-    <div id="leaderboards-box" style="display: none;">
-        Hi
+    <div id="leaderboards-box" class="slwp-box">
+        <form>
+            nonce 
+        <?php foreach ($leaderboards as $leaderboard): ?>
+            <div><label for="lb-cb-<?php echo $leaderboard->ID; ?>"><input type="checkbox" id="lb-cb-<?php echo $leaderboard->ID; ?>" class="lb-cb-<?php echo $leaderboard->ID; ?>" name="lb-cb-<?php echo $leaderboard->ID; ?>" value="1"><?php echo $leaderboard->post_title; ?></label></div>
+        <?php endforeach; ?>
+        <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Update"></p>
+        </form>
     </div>
 </div>

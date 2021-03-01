@@ -182,6 +182,7 @@ final class SLWP_Admin {
      */
     public function scripts_styles() {
         wp_enqueue_script( 'slwp-admin-athletes-script', SLWP_URL . 'js/admin-athletes.js', array('jquery'), SLWP_VERSION, true );
+        wp_enqueue_style( 'slwp-admin-athletes-style', SLWP_URL . 'css/admin-athletes.css', '', SLWP_VERSION );
     }
 
     public function update_settings() {
