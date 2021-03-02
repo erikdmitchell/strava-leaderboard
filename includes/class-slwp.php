@@ -103,6 +103,7 @@ final class SLWP {
         include_once( SLWP_ABSPATH . 'includes/class-slwp-oauth.php' );
         include_once( SLWP_ABSPATH . 'includes/class-slwp-db.php' );
         include_once( SLWP_ABSPATH . 'includes/class-slwp-db-athletes.php' );
+        include_once( SLWP_ABSPATH . 'includes/class-slwp-db-leaderboard-athletes.php' );
         include_once( SLWP_ABSPATH . 'includes/class-slwp-post-types.php' );
         include_once( SLWP_ABSPATH . 'includes/class-slwp-api-wrapper.php' );
         include_once( SLWP_ABSPATH . 'includes/class-slwp-install.php' );
