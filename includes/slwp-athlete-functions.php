@@ -50,3 +50,30 @@ function slwp_athlete_name($id = 0) {
 
     echo $name;
 }
+
+function slwp_get_athlete_leaderboards( $args = '' ) {
+    $athlete_lb_db = new SLWP_DB_Leaderboard_Athletes();
+    $athlete_leaderboards = $athlete_lb_db->get_athlete_leaderboards( $args );
+    
+    return $athlete_leaderboards;    
+}
+
+function slwp_get_athlete_leaderboards_list($athlete_id = 0) {
+    $athlete_leaderboards = array();
+    $athlete_lb_data = slwp_get_athlete_leaderboards( array('athlete_id' => $athlete_id));
+    
+    if (empty($athlete_lb_data))
+        return $athlete_leaderboards;
+        
+    foreach ($athlete_lb_data as $obj) {
+        $athlete_leaderboards[] = $obj->leaderboard_id;
+    }
+    
+    return $athlete_leaderboards;
+}
+
+function slwp_athlete_leaderboards_list($athlete_id = 0) {
+    $lb_list = slwp_get_athlete_leaderboards_list( $athlete_id );
+    
+    echo implode(', ', $lb_list);
+}
