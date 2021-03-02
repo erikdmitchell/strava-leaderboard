@@ -104,7 +104,7 @@ class SLWP_Install {
             PRIMARY KEY (id)
         ) $charset_collate;";
 
-        $sql[] = "CREATE TABLE slwp_leaderbpard_athletes (
+        $sql[] = "CREATE TABLE slwp_leaderboard_athletes (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             athlete_id int(11) DEFAULT NULL,
             leaderboard_id int(11) DEFAULT NULL,
