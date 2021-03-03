@@ -1,19 +1,19 @@
 <?php
 /**
- * Strava Leaderboard Time Functions
+ * Strava Leaderboard Functions
  *
  * @package slwp
  * @version 0.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
 function time_lb( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
     $users_data = slwp()->users->get_users_data();
-echo "users_data _deprecated<br>";     
+    echo 'users_data _deprecated<br>';
     $data = array();
     $data['name'] = $fields['name'];
 
@@ -57,11 +57,11 @@ echo "users_data _deprecated<br>";
     return $data;
 }
 
-function slwp_get_leaderboards($args = '') {
-    $defaults = array('post_type' => 'leaderboard' );
+function slwp_get_leaderboards( $args = '' ) {
+    $defaults = array( 'post_type' => 'leaderboard' );
     $args = wp_parse_args( $args, $defaults );
     $leaderboards = get_posts( $args );
-    
+
     return $leaderboards;
 }
 

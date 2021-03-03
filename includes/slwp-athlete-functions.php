@@ -7,45 +7,49 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
-function slwp_add_athlete($access_token = '') {
-    if (empty($access_token) || '' == $access_token)
+function slwp_add_athlete( $access_token = '' ) {
+    if ( empty( $access_token ) || '' == $access_token ) {
         return false;
-    
+    }
+
     $api_wrapper = new SLWP_Api_Wrapper();
-    $athlete = $api_wrapper->get_athlete( $access_token );    
+    $athlete = $api_wrapper->get_athlete( $access_token );
 
     $athlete_db = new SLWP_DB_Athletes();
-    
-    $row_id = $athlete_db->get_column_by( 'id', 'athlete_id', $athlete->getID());
-    
-    if ($row_id)
-        return $row_id;
 
-    return $athlete_db->insert(array(
-        'age' => '',
-        'athlete_id' => $athlete->getId(),
-        'first_name' => $athlete->getFirstname(),
-        'gender' => $athlete->getSex(),
-        'last_name' => $athlete->getLastname(),                
-    ));
+    $row_id = $athlete_db->get_column_by( 'id', 'athlete_id', $athlete->getID() );
+
+    if ( $row_id ) {
+        return $row_id;
+    }
+
+    return $athlete_db->insert(
+        array(
+            'age' => '',
+            'athlete_id' => $athlete->getId(),
+            'first_name' => $athlete->getFirstname(),
+            'gender' => $athlete->getSex(),
+            'last_name' => $athlete->getLastname(),
+        )
+    );
 }
 
-function slwp_get_athletes($args = '') {
+function slwp_get_athletes( $args = '' ) {
     $athlete_db = new SLWP_DB_Athletes();
     $athletes = $athlete_db->get_athletes( $args );
-    
+
     return $athletes;
 }
 
-function slwp_athlete_name($id = 0) {
-    if (empty($id) || !$id) {
+function slwp_athlete_name( $id = 0 ) {
+    if ( empty( $id ) || ! $id ) {
         echo '';
     }
-    
-    $athlete = slwp_get_athletes(array('athlete_id' => $id));
+
+    $athlete = slwp_get_athletes( array( 'athlete_id' => $id ) );
     $name = $athlete->first_name . ' ' . $athlete->last_name;
 
     echo $name;
@@ -54,26 +58,56 @@ function slwp_athlete_name($id = 0) {
 function slwp_get_athlete_leaderboards( $args = '' ) {
     $athlete_lb_db = new SLWP_DB_Leaderboard_Athletes();
     $athlete_leaderboards = $athlete_lb_db->get_athlete_leaderboards( $args );
-    
-    return $athlete_leaderboards;    
-}
 
-function slwp_get_athlete_leaderboards_list($athlete_id = 0) {
-    $athlete_leaderboards = array();
-    $athlete_lb_data = slwp_get_athlete_leaderboards( array('athlete_id' => $athlete_id));
-    
-    if (empty($athlete_lb_data))
-        return $athlete_leaderboards;
-        
-    foreach ($athlete_lb_data as $obj) {
-        $athlete_leaderboards[] = $obj->leaderboard_id;
-    }
-    
     return $athlete_leaderboards;
 }
 
-function slwp_athlete_leaderboards_list($athlete_id = 0) {
+function slwp_get_athlete_leaderboards_list( $athlete_id = 0 ) {
+    $athlete_leaderboards = array();
+    $athlete_lb_data = slwp_get_athlete_leaderboards( array( 'athlete_id' => $athlete_id ) );
+
+    if ( empty( $athlete_lb_data ) ) {
+        return $athlete_leaderboards;
+    }
+
+    foreach ( $athlete_lb_data as $obj ) {
+        $athlete_leaderboards[] = $obj->leaderboard_id;
+    }
+
+    return $athlete_leaderboards;
+}
+
+function slwp_athlete_leaderboards_list( $athlete_id = 0 ) {
     $lb_list = slwp_get_athlete_leaderboards_list( $athlete_id );
-    
-    echo implode(', ', $lb_list);
+
+    echo implode( ', ', $lb_list );
+}
+
+function slwp_athlete_in_leaderboard( $athlete_id = 0, $leaderboard_id = 0 ) {
+    global $wpdb;
+
+    $athlete_lb_db = new SLWP_DB_Leaderboard_Athletes();
+
+    $lb_id = $wpdb->get_var( $wpdb->prepare( "SELECT leaderboard_id FROM $athlete_lb_db->table_name WHERE athlete_id = %s AND leaderboard_id = %s LIMIT 1;", $athlete_id, $leaderboard_id ) );
+
+    if ( $lb_id ) {
+        return true;
+    }
+
+    return false;
+}
+
+// admin func.
+function slwp_athlete_in_leaderboard_checked( $athlete_id = 0, $leaderboard_id = 0, $echo = true ) {
+    if ( slwp_athlete_in_leaderboard( $athlete_id, $leaderboard_id ) ) {
+        $result = " checked='checked'";
+    } else {
+        $result = '';
+    }
+
+    if ( $echo ) {
+        echo $result;
+    }
+
+    return $result;
 }

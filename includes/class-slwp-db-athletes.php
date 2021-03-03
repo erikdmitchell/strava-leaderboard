@@ -144,9 +144,9 @@ class SLWP_DB_Athletes extends SLWP_DB {
             wp_cache_set( $cache_key, $results, 'athletes', 3600 );
 
         }
-        
+
         // if we have a singular result, we return it as just the object -- applys to athlete id only.
-        if (1 == count($results) && 0 != $args['athlete_id']) {
+        if ( 1 == count( $results ) && 0 != $args['athlete_id'] ) {
             $results = $results[0];
         }
 

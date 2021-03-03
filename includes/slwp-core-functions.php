@@ -9,7 +9,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
 // Include core functions (available in both admin and frontend).
@@ -20,7 +20,7 @@ require SLWP_ABSPATH . 'includes/slwp-segment-functions.php';
 
 /**
  * Get client ID.
- * 
+ *
  * @access public
  * @return string
  */

@@ -24,7 +24,7 @@ class SLWP_DB_Leaderboard_Athletes extends SLWP_DB {
         return array(
             'id' => '%d',
             'athlete_id' => '%d',
-            'leaderboard_id' => '%d',            
+            'leaderboard_id' => '%d',
         );
     }
 
@@ -37,7 +37,7 @@ class SLWP_DB_Leaderboard_Athletes extends SLWP_DB {
     public function get_column_defaults() {
         return array(
             'athlete_id' => null,
-            'leaderboard_id' => null, 
+            'leaderboard_id' => null,
         );
     }
 
@@ -122,9 +122,9 @@ class SLWP_DB_Leaderboard_Athletes extends SLWP_DB {
             wp_cache_set( $cache_key, $results, 'athlete_leaderboards', 3600 );
 
         }
-        
+
         // if we have a singular result, we return it as just the object -- applys to athlete id only.
-        if (1 == count($results) && 0 != $args['athlete_id']) {
+        if ( 1 == count( $results ) && 0 != $args['athlete_id'] ) {
             $results = $results[0];
         }
 

@@ -95,6 +95,7 @@ final class SLWP_Admin {
         add_action( 'admin_menu', array( $this, 'menu' ) );
         add_action( 'admin_init', array( $this, 'update_settings' ) );
         add_action( 'init', array( $this, 'init' ), 1 );
+        add_action( 'wp_ajax_edit_athlete_lb', array( $this, 'ajax_edit_athlete_lb' ) );
     }
 
     /**
@@ -113,34 +114,36 @@ final class SLWP_Admin {
             SLWP_ASSETS_URL . 'images/strava_symbol_white.png',
             89
         );
-        
+
         add_submenu_page(
             'slwp',
             __( 'Athletes', 'slwp' ),
             __( 'Athletes', 'slwp' ),
-            'manage_options', 
-            'slwp-athletes', 
-            array( $this, 'page_athlete' ) 
+            'manage_options',
+            'slwp-athletes',
+            array( $this, 'page_athlete' )
         );
     }
+
 
     /**
      * Page.
      *
      * @access public
-     * @param string $page (default: '').
+     * @param string $page (default: '')
+     * @param array  $args (default: array())
      * @return void
      */
-    public function page( $page = '' ) {
+    public function page( $page = '', $args = array() ) {
         if ( isset( $_GET['subpage'] ) ) :
-            $this->get_page( $_GET['subpage'] );
+            $this->get_page( $_GET['subpage'], $args );
         elseif ( ! empty( $page ) ) :
-            $this->get_page( $page );
+            $this->get_page( $page, $args );
         else :
-            $this->get_page( 'main' );
+            $this->get_page( 'main', $args );
         endif;
     }
-    
+
     public function page_athlete() {
         $this->page( 'athlete' );
     }
@@ -181,7 +184,7 @@ final class SLWP_Admin {
      * @return void
      */
     public function scripts_styles() {
-        wp_enqueue_script( 'slwp-admin-athletes-script', SLWP_URL . 'js/admin-athletes.js', array('jquery'), SLWP_VERSION, true );
+        wp_enqueue_script( 'slwp-admin-athletes-script', SLWP_URL . 'js/admin-athletes.js', array( 'jquery' ), SLWP_VERSION, true );
         wp_enqueue_style( 'slwp-admin-athletes-style', SLWP_URL . 'css/admin-athletes.css', '', SLWP_VERSION );
     }
 
@@ -197,6 +200,20 @@ final class SLWP_Admin {
         foreach ( $_POST['slwp'] as $key => $value ) {
             update_option( $key, $value );
         }
+    }
+
+    public function ajax_edit_athlete_lb() {
+        $athlete_id = intval( $_POST['athlete_id'] );
+
+        $args = array(
+            'athlete_id' => $athlete_id,
+            'athlete_leaderboards' => slwp_get_athlete_leaderboards_list( $athlete_id ),
+            'leaderboards' => slwp_get_leaderboards(),
+        );
+
+        echo $this->page( 'athlete-leaderboards-box', $args );
+
+        wp_die();
     }
 }
 

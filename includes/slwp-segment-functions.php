@@ -7,13 +7,13 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
 function single_segment( $fields ) {
     $api_wrapper = new SLWP_Api_Wrapper();
-    //$users_data = slwp()->users->get_users_data();
-echo "users_data _deprecated<br>";    
+    // $users_data = slwp()->users->get_users_data();
+    echo 'users_data _deprecated<br>';
     $data = array();
     $data['name'] = $fields['name'];
 
