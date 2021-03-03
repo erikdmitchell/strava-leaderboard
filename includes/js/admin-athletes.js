@@ -16,3 +16,26 @@ jQuery( '.edit-athlete-lb' ).on(
 
     }
 );
+
+jQuery( document ).on(
+    'click',
+    '#slwp-update-athlete-lbs',
+    function(e) {
+        e.preventDefault();
+
+        var data = {
+            'action': 'slwp_update_athlete_lbs',
+            'form_data': jQuery('form#slwp-athlete-lbs').serialize(),
+            // nonce
+        };
+
+        jQuery.post(
+            ajaxurl,
+            data,
+            function(response) {
+console.log(response);
+            }
+        );
+
+    }
+);

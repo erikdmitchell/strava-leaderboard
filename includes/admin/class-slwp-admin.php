@@ -96,6 +96,7 @@ final class SLWP_Admin {
         add_action( 'admin_init', array( $this, 'update_settings' ) );
         add_action( 'init', array( $this, 'init' ), 1 );
         add_action( 'wp_ajax_edit_athlete_lb', array( $this, 'ajax_edit_athlete_lb' ) );
+        add_action( 'wp_ajax_slwp_update_athlete_lbs', array( $this, 'ajax_slwp_update_athlete_lbs' ) );
     }
 
     /**
@@ -212,6 +213,41 @@ final class SLWP_Admin {
         );
 
         echo $this->page( 'athlete-leaderboards-box', $args );
+
+        wp_die();
+    }
+
+    public function ajax_slwp_update_athlete_lbs() {
+        $athlete_lb_db = new SLWP_DB_Leaderboard_Athletes();
+        $form_data = array();
+        $leaderboard_ids = slwp_get_leaderboards( array( 'fields' => 'ids' ) );
+
+        parse_str( $_POST['form_data'], $form_data );
+
+        $athlete_id = $form_data['athlete_id'];
+        print_r( $form_data['lb'] );
+        foreach ( $leaderboard_ids as $leaderboard_id ) {
+            if ( isset( $form_data['lb'][ $leaderboard_id ] ) ) {
+                echo 'update';
+            } else {
+                echo 'remove';
+            }
+            // value is always 1
+            /*
+            1   4334    41
+            2   4334    40
+            3   10388744    41
+            4   10388744    40
+            5   122066  41
+            6   122066  40
+            7   14719   41
+            8   14719   40
+            9   23000032    41
+            10  23000032    40
+            11  1182818 41
+            12  1182818 40
+            */
+        }
 
         wp_die();
     }
